@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FluxTV</title>
+  <style>
+    :root{
+      --bg-1:#071226; --bg-2:#041022; --card:#0d1b2b;
+      --accent:#ff6b2d; --muted:#9fb0c6;
+      --glow:0 0 20px rgba(255,107,45,0.8),0 0 35px rgba(255,107,45,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#e6eef6;
+      overflow-x:hidden;
+      /* reserve space for fixed navbar */
+      padding-top:72px;
+    }
+    .container{width:90%;max-width:1100px;margin:0 auto;}
+
+    /* NAVBAR (fixed) */
+    .navbar{
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      z-index:9999;
+      background:rgba(4,8,16,0.55);
+      backdrop-filter: blur(8px);
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 6px 18px rgba(0,0,0,0.45);
+    }
+    .nav-inner{
+      width:90%;
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 0;
+    }
+    .nav-left{display:flex;align-items:center;gap:12px}
+    .nav-left img{height:42px;display:block}
+    .nav-brand{font-weight:800;color:var(--accent);text-shadow:var(--glow);font-size:20px}
+    .nav-links{
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+    .nav-links a{
+      color:#fff;text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;
+      transition:.18s;
+    }
+    .nav-links a:hover{color:var(--accent);transform:translateY(-2px)}
+    .nav-cta{background:var(--accent);color:white;padding:8px 14px;border-radius:10px;font-weight:700}
+
+
+    /* hamburger */
+    .hamburger{display:none;cursor:pointer;width:42px;height:36px;background:#f24100;align-items:center;justify-content:center}
+    .hamburger .bar{display:block;width:24px;height:2px;background:#fff;border-radius:2px;position:relative;transition:all .25s}
+    .hamburger .bar:before,.hamburger .bar:after{content:'';position:absolute;left:0;width:24px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
+    .hamburger .bar:before{top:-7px}
+    .hamburger .bar:after{top:7px}
+    
+    .cta {
+            background: linear-gradient(180deg, var(--accent), #f24100);
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: .25s;
+        }
+
+        .cta:hover {
+            transform: scale(1.05);
+        }
+        
+
+    /* mobile styles */
+    @media (max-width: 880px){
+      .nav-links{position:fixed;top:72px;right:0;left:0;background:rgba(2,6,12,0.94);flex-direction:column;padding:18px 0;gap:8px;max-height:0;overflow:hidden;transition:max-height .28s ease}
+      .nav-links.open{max-height:420px}
+      .nav-links a{display:block;padding:12px 18px}
+      .hamburger{display:flex}
+    }
+    
+
+    /* hero + other content (trimmed styles) */
+    .hero{min-height:72vh;display:flex;align-items:center;justify-content:center;padding:48px 0;position:relative}
+    .hero-inner{display:grid;grid-template-columns:1fr;gap:28px;width:100%}
+    @media(min-width:900px){.hero-inner{grid-template-columns:1fr 460px;gap:48px}}
+    .hero-left{text-align:left}
+    .logo{width:140px;margin-bottom:20px}
+    .eyebrow{background:rgba(255,255,255,0.04);color:var(--muted);padding:6px 10px;border-radius:999px;margin-bottom:12px;display:inline-block}
+    h1{margin:0 0 12px;font-size:28px}
+    @media(min-width:900px){h1{font-size:40px}}
+    p.lead{margin:0 0 20px;color:var(--muted);max-width:60ch}
+    /* REAL FIX for black bar under mobile menu */
+@media (max-width: 880px) {
+  .nav-links {
+    background: rgba(2, 6, 12, 0.94);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s ease-in-out, padding .25s ease;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .nav-links.open {
+    max-height: 500px; /* enough to show all links */
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+}
+
+
+    /* pricing + plans */
+    #pricing-desc{margin-bottom:25px;color:var(--muted)}
+    .device-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px}
+    .device-btn{padding:10px 18px;border-radius:10px;background:rgba(255,255,255,0.04);color:var(--muted);cursor:pointer;font-weight:600;border:1px solid transparent;transition:.18s}
+    .device-btn.active{background:var(--accent);color:#fff;transform:scale(1.06)}
+    .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+    .plan{background:var(--card);padding:22px;border-radius:16px;border:1px solid rgba(255,255,255,0.06)}
+    .plan h3{font-size:22px;margin:0 0 10px}
+    .price{font-size:36px;font-weight:800;color:var(--accent);margin-bottom:12px}
+    .plan p{color:var(--muted);font-size:15px;line-height:1.5}
+
+    /* scroller */
+    .scroller{width:100%;overflow:hidden;padding:10px 0}
+    .scroller-track{display:flex;gap:28px;align-items:center;will-change:transform}
+    .scroller img{height:56px;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(255,255,255,0.12))}
+
+    /* channel list section */
+    .channel-list-section{padding:90px 0;text-align:center;background:radial-gradient(circle at center, rgba(255,255,255,0.02), rgba(0,0,0,0.25))}
+    .cls-title{font-size:36px;margin-bottom:18px}
+    .cls-subtitle{color:var(--muted);max-width:720px;margin:0 auto 30px auto}
+    .cls-button{background:#0077ff;color:#fff;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:700}
+
+    /* small helpers */
+    .center{text-align:center}
+    
+     /* Pricing */
+        #pricing-desc {
+            margin-bottom: 25px;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .device-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .device-btn {
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--muted);
+            cursor: pointer;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: .25s;
+        }
+
+        .device-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .device-btn.active {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.08);
+        }
+
+        .plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .plan {
+            background: var(--card);
+            padding: 22px;
+            border-radius: 16px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: .25s;
+        }
+
+        .plan:hover {
+            transform: translateY(-6px);
+        }
+
+        .plan h3 {
+            margin: 0 0 10px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .price {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .popular {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: var(--accent);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        .plan.popular-glow {
+            box-shadow: var(--glow);
+        }
+
+        .plan a {
+            display: block;
+            margin-top: 15px;
+            padding: 10px;
+            background: var(--accent);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: .25s;
+        }
+
+        .plan a:hover {
+            transform: scale(1.05);
+        }
+
+        .plan p {
+            font-size: 16px;
+            line-height: 1.45;
+        }
+    
+    /* Why Choose Us Section*/
+        .why-server {
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.25));
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 45px;
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .why-item {
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.45);
+            transition: 0.25s;
+        }
+
+        .why-item:hover {
+            transform: translateY(-6px);
+        }
+
+        .why-icon {
+            width: 64px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.25));
+        }
+
+        .why-item h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .why-item p {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.45;
+        }
+
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <img src="https://delgadohome.site/web/assets/img/banner-light.png" alt="FluxTV logo">
+        <div class="nav-brand"></div>
+      </div>
+
+      <!-- links (desktop + mobile) -->
+      <nav id="navLinks" class="nav-links" aria-label="Main links">
+        <a href="#home">Home</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#about">About</a>
+        <a href="#guide">Guide</a>
+        <a href="#support">Support</a>
+        <a class="cta" roll="button" href="#signup" style="margin-left:12px">24-hr Free Trial</a>
+      </nav>
+
+      <!-- hamburger -->
+      <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main id="home">
+    <section class="hero container">
+      <div class="hero-inner">
+        <div class="hero-left">
+    
+          <div class="eyebrow">Streaming • Live TV • Movies</div>
+          <h1>All Your Media, One Subscription.</h1>
+          <p class="lead">Watch live channels, on-demand movies and personal media — all in one app. No clutter, fast playback, and the devices you already own.</p>
+          <div style="margin-top:18px">
+            <a class="cta" roll="button" href="#trial">24-hr free trial</a>
+          </div>
+          <div style="margin-top:18px;color:var(--muted);font-size:13px">Secure payments • 24/7 support • High Quality Video Streaming</div>
+        </div>
+        <div class="mockup" aria-hidden="true">
+          <img src="https://t3.ftcdn.net/jpg/04/35/60/66/360_F_435606616_TSGTXV5cm4hWDOJEIUttsxAaBKSv3BnM.jpg" alt="App preview" style="width:100%;border-radius:12px">
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features container" aria-labelledby="features-title">
+      <h2 id="features-title" class="center" style="margin-bottom:22px">Features</h2>
+      <div class="features-grid" style="display:grid;grid-template-columns:1fr;gap:18px">
+        <div class="feature" style="padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.03))">
+          <h3>Live TV</h3><p style="color:var(--muted)">Thousands of HD UHD Channels with EPG</p>
+        </div>
+        <div class="feature" style="padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.03))">
+          <h3>On-demand VOD</h3><p style="color:var(--muted)">Thousands of HD UHD 4K VOD</p>
+        </div>
+        <div class="feature" style="padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.03))">
+          <h3>Many Countries</h3><p style="color:var(--muted)">We offer thousands of IPTV channels covering most countries around the world.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="container" style="padding:28px 0 60px">
+      <h2 class="center">Choose Your Device Plan</h2>
+      <p id="pricing-desc" class="center">Select how many devices you want to use FluxTV on. Each plan includes unlimited streaming, full HD access, and 24/7 support.</p>
+
+      <div class="device-select" id="deviceSelect" style="justify-content:center">
+        <!-- buttons inserted by JS -->
+      </div>
+
+      <div class="plans" id="plans" style="margin-top:18px">
+        <!-- plan cards inserted by JS -->
+      </div>
+    </section>
+
+    <!-- DEVICE CAROUSEL -->
+    <section class="scroller container" aria-hidden="false" style="padding-bottom:28px">
+      <h3 class="carousel-title center">Works On Everything!</h3>
+      <div class="scroller-track" id="devices-track">
+        <!-- images -->
+        <img src="https://img.icons8.com/color/96/windows-10.png" alt="">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/1280px-Tux.svg.png" alt="">
+        <img src="https://img.icons8.com/color/96/mac-os.png" alt="">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/VLC_icon.png" alt="">
+        <img src="https://img.icons8.com/color/96/chrome.png" alt="">
+        <img src="https://img.icons8.com/color/96/android-os.png" alt="">
+        <img src="https://img.icons8.com/color/96/apple-tv.png" alt="">
+        <img src="https://img.icons8.com/color/96/fire-tv.png" alt="">
+        <img src="https://www.infomir.eu/img/mag254.png" alt="">
+        <img src="https://www.simpletelly.com/wp-content/uploads/2015/11/LG-Smart-TV-logo.png" alt="">
+      </div>
+    </section>
+
+    <!-- COUNTRY CAROUSEL -->
+    <section class="scroller container" style="padding-bottom:28px">
+      <h3 class="carousel-title center">Available Worldwide!</h3>
+      <div class="scroller-track" id="countries-track">
+        <img src="https://flagcdn.com/w80/us.png" alt="">
+        <img src="https://flagcdn.com/w80/ca.png" alt="">
+        <img src="https://flagcdn.com/w80/gb.png" alt="">
+        <img src="https://flagcdn.com/w80/de.png" alt="">
+        <img src="https://flagcdn.com/w80/fr.png" alt="">
+        <img src="https://flagcdn.com/w80/es.png" alt="">
+        <img src="https://flagcdn.com/w80/in.png" alt="">
+        <img src="https://flagcdn.com/w80/jp.png" alt="">
+        <img src="https://flagcdn.com/w80/ar.png" alt="">
+      </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="why-server" style="padding:70px 0; text-align:center;">
+      <h2 style="font-size:34px; margin-bottom:40px;">Why Choose Us</h2>
+      <div class="why-grid">
+        <div class="why-item"><img src="https://img.icons8.com/fluency/96/satellite.png" class="why-icon"><h3>Thousands of Channels</h3><p>Your IPTV subscription offers international IPTV channels from around the world.</p></div>
+        <div class="why-item"><img src="https://img.icons8.com/fluency/96/cinema---v2.png" class="why-icon"><h3>Video On Demand</h3><p>Stream full seasons, latest movies and more from our large VOD library.</p></div>
+        <div class="why-item"><img src="https://img.icons8.com/fluency/96/laptop.png" class="why-icon"><h3>Watch on Any Device</h3><p>Works on Smart TVs, Android, Firestick, MAG, KODI, PC and anything supporting M3U/portals.</p></div>
+        <div class="why-item"><img src="https://img.icons8.com/fluency/96/customer-support.png" class="why-icon"><h3>World Class Support</h3><p>In-depth tutorials and fast support so installation is smooth & easy.</p></div>
+        <div class="why-item"><img src="https://img.icons8.com/fluency/96/bank-card-back-side.png" class="why-icon"><h3>Safe & Secure Payment</h3><p>Secure payments — with no complicated billing processes required.</p></div>
+        <div class="why-item"><img src="https://img.icons8.com/fluency/96/money-bag.png" class="why-icon"><h3>Best Prices</h3><p>Competitive pricing for the amount of content provided.</p></div>
+      </div>
+    </section>
+
+    <!-- CHANNEL LIST -->
+    <section class="channel-list-section">
+      <div class="cls-container container">
+        <div class="cls-icon">
+          <svg width="72" height="72" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 5h18v12H3V5z" stroke="#f24100" stroke-width="2"/><path d="M7 21h10" stroke="#f24100" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h2 class="cls-title">Explore Our Full Channel List</h2>
+        <p class="cls-subtitle">Browse all Live TV channels, sports, movies, news, international categories, and more — updated regularly with new content.</p>
+        <a class="cta" roll="button" href="/channels">View Channel List</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* ---------- NAV TOGGLE ---------- */
+    
+    
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    function setAria(open){
+      hamburger.setAttribute('aria-expanded', String(open));
+    }
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      setAria(isOpen);
+    });
+
+    // close menu when a nav link is clicked (mobile)
+    navLinks.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A' && window.innerWidth <= 880){
+        navLinks.classList.remove('open');
+        setAria(false);
+      }
+    });
+
+
+    /* ---------- PRICING / PLANS ---------- */
+    const pricing = {
+      1:{'1m':5,'3m':12,'6m':20,'12m':35},
+      2:{'1m':8,'3m':20,'6m':35,'12m':60},
+      3:{'1m':10,'3m':25,'6m':45,'12m':80},
+      4:{'1m':12,'3m':30,'6m':55,'12m':95},
+      5:{'1m':14,'3m':35,'6m':65,'12m':110}
+    };
+    const popularMap = {1:'3m',2:'3m',3:'6m',4:'6m',5:'12m'};
+    const labels = {'1m':'1 Month','3m':'3 Months','6m':'6 Months','12m':'12 Months'};
+    const descText = [
+      '• +16000 Live IPTV Channels',
+      '• +40,000 VOD & TV Shows',
+      '• Without Freezing',
+      '• 99.99% Uptime',
+      '• Android, PC, SmartTV',
+      '• 4K/FHD/HD/SD Quality',
+      '• Available Worldwide',
+      '• 24/7 Support'
+    ];
+
+    const urls = {'1m':'https://checkout.flux1.com','3m':'https://checkout.flux3.com','6m':'https://checkout.flux6.com','12m':'https://checkout.flux12.com'};
+    let current = 1;
+
+    function renderDeviceButtons(){
+      const wrap = document.getElementById('deviceSelect');
+      wrap.innerHTML = '';
+      for(let i=1;i<=5;i++){
+        const b = document.createElement('button');
+        b.className = 'device-btn' + (i===current?' active':'');
+        b.textContent = i + (i>1?' Devices':' Device');
+        b.onclick = ()=>{ current=i; renderDeviceButtons(); renderPlans(); };
+        wrap.appendChild(b);
+      }
+    }
+
+    function renderPlans(){
+      const area = document.getElementById('plans');
+      area.innerHTML = '';
+      const popular = popularMap[current];
+      Object.keys(pricing[current]).forEach(key=>{
+        const card = document.createElement('div'); card.className='plan';
+        if(key===popular) { card.classList.add('popular-glow'); const tag=document.createElement('div'); tag.className='popular'; tag.textContent='MOST POPULAR'; card.appendChild(tag); }
+        const h=document.createElement('h3'); h.textContent = labels[key];
+        const p=document.createElement('div'); p.className='price'; p.textContent = '$'+pricing[current][key];
+        const ul=document.createElement('ul'); ul.style.margin='0 0 12px 0'; ul.style.padding='0 0 0 18px'; ul.style.color='var(--muted)';
+        descText.forEach(line=>{ const li=document.createElement('li'); li.style.marginBottom='6px'; li.textContent=line.replace('• ',''); ul.appendChild(li); });
+        const a=document.createElement('a'); a.href=urls[key]; a.textContent='Choose Plan';
+        card.appendChild(h); card.appendChild(p); card.appendChild(ul); card.appendChild(a);
+        area.appendChild(card);
+      });
+    }
+
+    renderDeviceButtons();
+    renderPlans();
+
+    /* ---------- INFINITE SCROLLERS ---------- */
+    function startScroller(id, speed=0.4){
+      const track = document.getElementById(id);
+      if(!track) return;
+      // duplicate children once to enable seamless loop
+      const children = Array.from(track.children);
+      children.forEach(node => track.appendChild(node.cloneNode(true)));
+      let x = 0;
+      const totalWidth = track.scrollWidth / 2;
+      function loop(){
+        x -= speed;
+        if(Math.abs(x) >= totalWidth) x = 0;
+        track.style.transform = `translateX(${x}px)`;
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    }
+    startScroller('devices-track', 0.25);
+    startScroller('countries-track', 0.18);
+  </script>
+</body>
+</html>
