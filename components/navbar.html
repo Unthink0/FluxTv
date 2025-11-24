@@ -101,24 +101,4 @@
   </header>
 
 <script>
-// MOBILE MENU
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-
-    function setAria(open){
-      hamburger.setAttribute('aria-expanded', String(open));
-    }
-
-    hamburger.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('open');
-      setAria(isOpen);
-    });
-
-    // close menu when a nav link is clicked (mobile)
-    navLinks.addEventListener('click', (e) => {
-      if(e.target.tagName === 'A' && window.innerWidth <= 880){
-        navLinks.classList.remove('open');
-        setAria(false);
-      }
-    });
 </script>
