@@ -1,0 +1,136 @@
+<header>
+  <nav class="navbar">
+    <div class="nav-left">
+      <img src="assets/logo.png" class="logo-img" alt="FluxTV Logo">
+      <span class="logo-text">FluxTV</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="/index.php">Home</a></li>
+      <li><a href="/pricing.php">Pricing</a></li>
+      <li><a href="/free-trial.php">Free Trial</a></li>
+      <li><a href="/about.php">About</a></li>
+      <li><a href="/guide.php">Guide</a></li>
+      <li><a href="/support.php">Support</a></li>
+    </ul>
+
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+</header>
+
+<style>
+/* ---------- NAVBAR BASE ---------- */
+header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 25px;
+  background: #0a1224cc;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+/* ---------- LOGO ---------- */
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+.logo-img {
+  height: 38px;
+  margin-right: 8px;
+}
+.logo-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ff5c39;
+}
+
+/* ---------- LINKS ---------- */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+}
+.nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  transition: 0.3s;
+}
+.nav-links li a:hover {
+  color: #ff5c39;
+}
+
+/* ---------- ACTIVE PAGE ---------- */
+.nav-links li a.active {
+  color: #ff5c39;
+  font-weight: 700;
+}
+
+/* ---------- MOBILE ---------- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+.hamburger span {
+  width: 28px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* Mobile Menu */
+@media(max-width: 880px) {
+  .nav-links {
+    position: fixed;
+    top: 75px;
+    right: -100%;
+    background: #0a1224;
+    width: 60%;
+    height: 100vh;
+    padding-top: 50px;
+    flex-direction: column;
+    gap: 30px;
+    transition: 0.4s ease;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.4);
+  }
+
+  .nav-links.open {
+    right: 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+</style>
+
+<script>
+// MOBILE MENU
+const hamburger = document.querySelector(".hamburger");
+const navLinks = document.querySelector(".nav-links");
+
+hamburger.addEventListener("click", () => {
+  navLinks.classList.toggle("open");
+});
+
+// AUTO-HIGHLIGHT ACTIVE LINK
+const links = document.querySelectorAll(".nav-links a");
+links.forEach(link => {
+  if (link.href === window.location.href) {
+    link.classList.add("active");
+  }
+});
+</script>
