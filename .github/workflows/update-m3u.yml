@@ -1,23 +1,27 @@
-name: Update M3U
+name: Update Playlist
 
 on:
   schedule:
-    - cron: "0 * * * *"  # every hour
-  workflow_dispatch: {}
+    - cron: "0 */6 * * *"  # Every 6 hours
+  workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Download latest M3U
-        run: curl -L "http://fluxtv.pro/ZKq6ob9NfFkAXzT" -o /channels/FluxTV.m3u
+      - name: Download latest playlist
+        run: |
+          mkdir -p channels
+          curl -L "http://fluxtv.pro/ZKq6ob9NfFkAXzT" -o channels/FluxTV.m3u
 
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add FluxTV.m3u
-          git commit -m "Auto-update M3U" || echo "No changes"
+          git config user.email "github-actions@github.com"
+          git add channels/FluxTV.m3u
+          git commit -m "Updated playlist" || echo "No changes to commit"
           git push
