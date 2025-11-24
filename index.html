@@ -163,11 +163,12 @@
 
         .device-btn {
             padding: 10px 18px;
+            font-size: 16px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.05);
             color: var(--muted);
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 800;
             border: 1px solid transparent;
             transition: .25s;
         }
@@ -461,23 +462,25 @@
 
     /* ---------- PRICING / PLANS ---------- */
     const pricing = {
-      1:{'1m':5,'3m':12,'6m':20,'12m':35},
-      2:{'1m':8,'3m':20,'6m':35,'12m':60},
-      3:{'1m':10,'3m':25,'6m':45,'12m':80},
-      4:{'1m':12,'3m':30,'6m':55,'12m':95},
-      5:{'1m':14,'3m':35,'6m':65,'12m':110}
+      1:{'1m':"$10",'3m':"$25",'6m':"$50",'12m':"$80"},
+      2:{'1m':"$20",'3m':"$35",'6m':"$60",'12m':"$90"},
+      3:{'1m':"$25",'3m':"$45",'6m':"$70",'12m':"$100"},
+      4:{'1m':"$30",'3m':"$55",'6m':"$80",'12m':"$110"},
+      5:{'1m':"$35",'3m':"$65",'6m':"$90",'12m':"$130"},
+      6:{'24hr':"Free"}
     };
-    const popularMap = {1:'3m',2:'3m',3:'6m',4:'6m',5:'12m'};
-    const labels = {'1m':'1 Month','3m':'3 Months','6m':'6 Months','12m':'12 Months'};
+    const popularMap = {1:'3m',2:'3m',3:'6m',4:'6m',5:'12m',6:"1d"};
+    const labels = {'24hr':'24 Hour - 1 Connection','1m':'1 Month','3m':'3 Months','6m':'6 Months','12m':'12 Months'};
     const descText = [
       '• +16000 Live IPTV Channels',
       '• +40,000 VOD & TV Shows',
-      '• Without Freezing',
+      '• Antifreeze™ Technology',
       '• 99.99% Uptime',
-      '• Android, PC, SmartTV',
+      '• All Device Support',
       '• 4K/FHD/HD/SD Quality',
       '• Available Worldwide',
-      '• 24/7 Support'
+      '• No ISP Lock',
+      '• TV Guide (EPG)'
     ];
 
   const urls = {
@@ -510,20 +513,41 @@
     '3m': 'your-url-here_53',
     '6m': 'your-url-here',
     '12m': 'your-url-here'
+  },
+  6: {
+    '1d': 'your-url-here_61',
+    '3m': 'your-url-here_53',
+    '6m': 'your-url-here',
+    '12m': 'your-url-here'
   }
 };
 
-    function renderDeviceButtons(){
-      const wrap = document.getElementById('deviceSelect');
-      wrap.innerHTML = '';
-      for(let i=1;i<=5;i++){
-        const b = document.createElement('button');
-        b.className = 'device-btn' + (i===current?' active':'');
-        b.textContent = i + (i>1?' Devices':' Device');
-        b.onclick = ()=>{ current=i; renderDeviceButtons(); renderPlans(); };
-        wrap.appendChild(b);
-      }
+let current = 1;
+
+
+   function renderDeviceButtons(){
+  const wrap = document.getElementById('deviceSelect');
+  wrap.innerHTML = '';
+  
+  for(let i = 1; i <= 6; i++){
+    const b = document.createElement('button');
+    b.className = 'device-btn' + (i === current ? ' active' : '');
+
+    if (i === 6) {
+      b.textContent = "Free Trial";
+    } else {
+      b.textContent = i + (i > 1 ? ' Devices' : ' Device');
     }
+
+    b.onclick = () => { 
+      current = i; 
+      renderDeviceButtons(); 
+      renderPlans(); 
+    };
+
+    wrap.appendChild(b);
+  }
+}
 
     function renderPlans(){
       const area = document.getElementById('plans');
@@ -533,10 +557,12 @@
         const card = document.createElement('div'); card.className='plan';
         if(key===popular) { card.classList.add('popular-glow'); const tag=document.createElement('div'); tag.className='popular'; tag.textContent='MOST POPULAR'; card.appendChild(tag); }
         const h=document.createElement('h3'); h.textContent = labels[key];
-        const p=document.createElement('div'); p.className='price'; p.textContent = '$'+pricing[current][key];
+        const p=document.createElement('div'); p.className='price'; p.textContent = pricing[current][key];
         const ul=document.createElement('ul'); ul.style.margin='0 0 12px 0'; ul.style.padding='0 0 0 18px'; ul.style.color='var(--muted)';
         descText.forEach(line=>{ const li=document.createElement('li'); li.style.marginBottom='6px'; li.textContent=line.replace('• ',''); ul.appendChild(li); });
-        const a=document.createElement('a'); a.href=urls[key]; a.textContent='Choose Plan';
+        const a = document.createElement('a');
+a.href = urls[current][key];   // FIXED
+a.textContent = 'Choose Plan';
         card.appendChild(h); card.appendChild(p); card.appendChild(ul); card.appendChild(a);
         area.appendChild(card);
       });
