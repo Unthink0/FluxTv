@@ -387,8 +387,13 @@
         grouped[cat].push(ch);
       });
 
-      // Sort categories alphabetically, but keep some common ones first if present
-      orderedCats = Object.keys(grouped).sort((a,b) => a.localeCompare(b));
+      // Sort categories default
+     orderedCats = [];
+allChannels.forEach(ch => {
+  if (!orderedCats.includes(ch.group)) {
+    orderedCats.push(ch.group);
+  }
+});
 
       return { channels, grouped };
     }
