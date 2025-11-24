@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FluxTV – Channel List</title>
+  <style>
+    :root{
+      --bg-1:#071226; --bg-2:#041022; --card:#0d1b2b;
+      --accent:#ff6b2d; --muted:#9fb0c6;
+      --glow:0 0 20px rgba(255,107,45,0.8),0 0 35px rgba(255,107,45,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#e6eef6;
+      overflow-x:hidden;
+      padding-top:72px; /* space for navbar */
+    }
+    .container{width:90%;max-width:1100px;margin:0 auto;}
+
+    /* NAVBAR (same style as main site) */
+    .navbar{
+      position:fixed;
+      top:0;left:0;width:100%;
+      z-index:9999;
+      background:rgba(4,8,16,0.55);
+      backdrop-filter: blur(8px);
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 6px 18px rgba(0,0,0,0.45);
+    }
+    .nav-inner{
+      width:90%;max-width:1200px;margin:0 auto;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:12px;padding:12px 0;
+    }
+    .nav-left{display:flex;align-items:center;gap:12px}
+    .nav-left img{height:42px;display:block}
+    .nav-brand{font-weight:800;color:var(--accent);text-shadow:var(--glow);font-size:20px}
+    .nav-links{
+      display:flex;gap:20px;align-items:center;
+    }
+    .nav-links a{
+      color:#fff;text-decoration:none;font-weight:600;
+      padding:8px 10px;border-radius:8px;transition:.18s;
+    }
+    .nav-links a:hover{color:var(--accent);transform:translateY(-2px)}
+    .nav-cta{
+      background:var(--accent);color:white !important;
+      padding:8px 14px;border-radius:10px;font-weight:700;
+    }
+
+    .hamburger{
+      display:none;cursor:pointer;width:42px;height:36px;
+      background:#f24100;border:none;border-radius:10px;
+      align-items:center;justify-content:center;
+    }
+    .hamburger .bar{
+      display:block;width:24px;height:2px;background:#fff;
+      border-radius:2px;position:relative;transition:all .25s;
+    }
+    .hamburger .bar:before,
+    .hamburger .bar:after{
+      content:'';position:absolute;left:0;
+      width:24px;height:2px;background:#fff;border-radius:2px;
+      transition:all .25s;
+    }
+    .hamburger .bar:before{top:-7px}
+    .hamburger .bar:after{top:7px}
+
+    @media (max-width:880px){
+      .nav-links{
+        position:fixed;top:72px;left:0;right:0;
+        background:rgba(2,6,12,0.95);
+        flex-direction:column;gap:8px;
+        padding:0;
+        max-height:0;overflow:hidden;
+        transition:max-height .35s ease-in-out, padding .25s ease;
+      }
+      .nav-links.open{
+        max-height:420px;
+        padding:18px 0;
+      }
+      .nav-links a{display:block;padding:12px 18px}
+      .hamburger{display:flex}
+    }
+
+    /* PAGE HEADER */
+    .page-hero{
+      padding:40px 0 10px;
+      text-align:center;
+    }
+    .page-hero-logo{
+      width:220px;max-width:70%;
+      margin:0 auto 14px auto;
+      display:block;
+      filter:drop-shadow(0 0 18px rgba(255,255,255,0.15));
+    }
+    .page-hero h1{
+      margin:0 0 10px;
+      font-size:30px;
+      letter-spacing:-0.4px;
+    }
+    .page-hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    /* FILTER BAR */
+    .filter-bar{
+      margin:28px auto 22px auto;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      background:rgba(7,18,38,0.9);
+      border-radius:16px;
+      padding:14px 16px;
+      border:1px solid rgba(255,255,255,0.05);
+      box-shadow:0 12px 30px rgba(0,0,0,0.55);
+    }
+    .filter-bar-group{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .filter-label{
+      font-size:13px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+    }
+    .filter-input,
+    .filter-select{
+      background:rgba(4,10,24,0.95);
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:8px 11px;
+      color:#e6eef6;
+      font-family:inherit;
+      font-size:14px;
+      min-width:180px;
+      outline:none;
+    }
+    .filter-input::placeholder{
+      color:rgba(159,176,198,0.75);
+    }
+    .filter-input:focus,
+    .filter-select:focus{
+      border-color:var(--accent);
+      box-shadow:var(--glow);
+    }
+
+    @media (max-width:720px){
+      .filter-bar{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .filter-bar-group{
+        justify-content:space-between;
+      }
+      .filter-input,
+      .filter-select{
+        width:100%;
+      }
+    }
+
+    /* CHANNEL LIST */
+    .channels-wrapper{
+      margin-bottom:60px;
+    }
+    .category-block{
+      margin-bottom:28px;
+      background:rgba(6,16,34,0.9);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.05);
+      overflow:hidden;
+      box-shadow:0 10px 32px rgba(0,0,0,0.65);
+    }
+    .category-header{
+      padding:12px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(90deg,rgba(255,107,45,0.2),rgba(7,18,38,0.5));
+    }
+    .category-name{
+      font-size:18px;
+      font-weight:700;
+    }
+    .category-count{
+      font-size:13px;
+      color:var(--muted);
+    }
+    .channel-list{
+      list-style:none;
+      margin:0;
+      padding:4px 0;
+    }
+    .channel-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:8px 16px;
+      font-size:14px;
+      border-top:1px solid rgba(255,255,255,0.03);
+    }
+    .channel-row:nth-child(odd){
+      background:rgba(255,255,255,0.01);
+    }
+    .channel-name{
+      font-weight:500;
+    }
+    .channel-meta{
+      font-size:12px;
+      color:var(--muted);
+      opacity:0.9;
+    }
+
+    /* STATUS */
+    .status{
+      text-align:center;
+      margin:26px 0 40px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .status.error{color:#ff7b7b}
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <img src="https://delgadohome.site/web/assets/img/banner-light.png" alt="FluxTV logo">
+      </div>
+
+      <nav id="navLinks" class="nav-links" aria-label="Main links">
+        <a href="/#home">Home</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/channels.html">Channels</a>
+        <a href="/#guide">Guide</a>
+        <a href="/#support">Support</a>
+        <a class="nav-cta" href="/#signup">24-hr Free Trial</a>
+      </nav>
+
+      <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero container">
+      <img
+        src="https://delgadohome.site/web/assets/img/banner-light.png"
+        alt="FluxTV"
+        class="page-hero-logo"
+      >
+      <h1>Channel Lineup</h1>
+      <p>Browse all FluxTV channels by category, or quickly find what you want with search.</p>
+    </section>
+
+    <!-- FILTERS -->
+    <section class="container">
+      <div class="filter-bar">
+        <div class="filter-bar-group" style="flex:2 1 260px;">
+          <span class="filter-label">Search</span>
+          <input
+            id="searchInput"
+            class="filter-input"
+            type="text"
+            placeholder="Search channels (e.g. ESPN, HBO, Telemundo)…"
+          />
+        </div>
+        <div class="filter-bar-group" style="flex:1 1 200px;">
+          <span class="filter-label">Category</span>
+          <select id="categorySelect" class="filter-select">
+            <option value="all">All categories</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATUS / ERRORS -->
+    <div id="status" class="status">Loading channels…</div>
+
+    <!-- CHANNEL LIST -->
+    <section class="container">
+      <div id="channelsWrapper" class="channels-wrapper"></div>
+    </section>
+  </main>
+
+  <script>
+    /* ---------- NAV TOGGLE ---------- */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+
+    function setAria(open){
+      hamburger.setAttribute('aria-expanded', String(open));
+    }
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      setAria(isOpen);
+    });
+
+    navLinks.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A' && window.innerWidth <= 880){
+        navLinks.classList.remove('open');
+        setAria(false);
+      }
+    });
+
+    /* ---------- CHANNEL DATA + UI ---------- */
+
+    const M3U_URL = 'FluxTV.m3u'; // make sure this file is in the same folder as this HTML
+
+    let allChannels = [];   // flat list
+    let grouped      = {};  // by category
+    let orderedCats  = [];  // category names in order
+
+    const statusEl   = document.getElementById('status');
+    const wrapperEl  = document.getElementById('channelsWrapper');
+    const searchEl   = document.getElementById('searchInput');
+    const categoryEl = document.getElementById('categorySelect');
+
+    // Fetch + parse M3U
+    fetch(M3U_URL)
+      .then(res => {
+        if(!res.ok) throw new Error('Unable to load m3u file');
+        return res.text();
+      })
+      .then(parseM3U)
+      .then(initUI)
+      .catch(err => {
+        console.error(err);
+        statusEl.textContent = 'Could not load channel list. Please try again later.';
+        statusEl.classList.add('error');
+      });
+
+    function parseM3U(text){
+      const lines = text.split(/\r?\n/);
+      const channels = [];
+      let current = null;
+
+      for(let raw of lines){
+        const line = raw.trim();
+        if(!line) continue;
+
+        if(line.startsWith('#EXTINF')){
+          const afterTag = line.substring(8); // skip "#EXTINF:"
+          const commaIdx = afterTag.lastIndexOf(',');
+          const metaPart = commaIdx >= 0 ? afterTag.substring(0, commaIdx) : '';
+          const namePart = commaIdx >= 0 ? afterTag.substring(commaIdx + 1) : afterTag;
+
+          const name = namePart.trim() || 'Unnamed Channel';
+
+          let group = 'Other';
+          const groupMatch = metaPart.match(/group-title="([^"]*)"/i);
+          if(groupMatch && groupMatch[1]){
+            group = groupMatch[1].trim() || 'Other';
+          }
+
+          current = { name, group, url: '' };
+        }
+        else if(!line.startsWith('#') && current){
+          current.url = line;
+          channels.push(current);
+          current = null;
+        }
+      }
+
+      allChannels = channels;
+      grouped = {};
+
+      channels.forEach(ch => {
+        const cat = ch.group || 'Other';
+        if(!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(ch);
+      });
+
+      // Sort categories alphabetically, but keep some common ones first if present
+      orderedCats = Object.keys(grouped).sort((a,b) => a.localeCompare(b));
+
+      return { channels, grouped };
+    }
+
+    function initUI(){
+      if(!allChannels.length){
+        statusEl.textContent = 'No channels found in the playlist.';
+        return;
+      }
+
+      statusEl.textContent =
+        `Loaded ${allChannels.length} channels across ${orderedCats.length} categories.`;
+
+      // Fill category dropdown
+      orderedCats.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        categoryEl.appendChild(opt);
+      });
+
+      // Wire up filters
+      searchEl.addEventListener('input', renderFiltered);
+      categoryEl.addEventListener('change', renderFiltered);
+
+      renderFiltered();
+    }
+
+    function renderFiltered(){
+      const term = searchEl.value.trim().toLowerCase();
+      const selectedCat = categoryEl.value;
+
+      wrapperEl.innerHTML = '';
+
+      let categoriesToShow = orderedCats.slice();
+      if(selectedCat !== 'all'){
+        categoriesToShow = categoriesToShow.filter(c => c === selectedCat);
+      }
+
+      let totalShown = 0;
+
+      categoriesToShow.forEach(cat => {
+        const channels = grouped[cat] || [];
+        const filtered = term
+          ? channels.filter(ch => ch.name.toLowerCase().includes(term))
+          : channels.slice();
+
+        if(!filtered.length) return;
+
+        totalShown += filtered.length;
+
+        const block = document.createElement('section');
+        block.className = 'category-block';
+
+        const header = document.createElement('div');
+        header.className = 'category-header';
+
+        const title = document.createElement('div');
+        title.className = 'category-name';
+        title.textContent = cat;
+
+        const count = document.createElement('div');
+        count.className = 'category-count';
+        count.textContent = `${filtered.length} channel${filtered.length !== 1 ? 's' : ''}`;
+
+        header.appendChild(title);
+        header.appendChild(count);
+
+        const list = document.createElement('ul');
+        list.className = 'channel-list';
+
+        filtered.forEach(ch => {
+          const li  = document.createElement('li');
+          li.className = 'channel-row';
+
+          const name = document.createElement('span');
+          name.className = 'channel-name';
+          name.textContent = ch.name;
+
+          const meta = document.createElement('span');
+          meta.className = 'channel-meta';
+          meta.textContent = 'Live • FluxTV';
+
+          li.appendChild(name);
+          li.appendChild(meta);
+          list.appendChild(li);
+        });
+
+        block.appendChild(header);
+        block.appendChild(list);
+        wrapperEl.appendChild(block);
+      });
+
+      if(totalShown === 0){
+        wrapperEl.innerHTML = '<div class="status">No channels matched your filters.</div>';
+      } else {
+        statusEl.textContent =
+          `Showing ${totalShown} channel${totalShown !== 1 ? 's' : ''} in ${categoriesToShow.length} categor${categoriesToShow.length !== 1 ? 'ies' : 'y'}.`;
+      }
+    }
+  </script>
+</body>
+</html>
