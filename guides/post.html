@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Guide Post</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root {
+  --bg1:#071226;
+  --bg2:#041022;
+  --card:#0d1b2b;
+  --accent:#ff6b2d;
+  --muted:#9fb0c6;
+}
+body {
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  margin:0;
+  font-family:Inter,sans-serif;
+  color:white;
+  padding:30px;
+}
+.post-container {
+  max-width:850px;
+  margin:0 auto;
+  background:var(--card);
+  padding:25px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 6px 25px rgba(0,0,0,0.45);
+}
+.post-title {
+  font-size:32px;
+  font-weight:700;
+  color:var(--accent);
+}
+.post-date {
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:18px;
+}
+.post-image {
+  width:100%;
+  border-radius:12px;
+  margin:15px 0;
+}
+.post-content {
+  font-size:17px;
+  line-height:1.55;
+}
+.back {
+  display:inline-block;
+  margin-bottom:20px;
+  color:var(--accent);
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="back" onclick="history.back()">← Back to Guides</div>
+
+<div id="post" class="post-container">Loading…</div>
+
+<script>
+async function loadPost() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const box = document.getElementById("post");
+
+  try {
+    const res = await fetch("/guides/posts.json");
+    const posts = await res.json();
+    const post = posts.find(p => String(p.id) === String(id));
+
+    if (!post) {
+      box.innerHTML = "Post not found.";
+      return;
+    }
+
+    box.innerHTML = `
+      <div class="post-title">${post.title}</div>
+      <div class="post-date">${new Date(post.date).toLocaleDateString()}</div>
+      ${post.image ? `<img src="${post.image}" class="post-image">` : ""}
+      <div class="post-content">${post.content.replace(/\n/g, "<br>")}</div>
+    `;
+  } catch(err) {
+    box.innerHTML = "Error loading post.";
+  }
+}
+
+loadPost();
+</script>
+
+</body>
+</html>
