@@ -149,7 +149,7 @@ async function loadPosts(){
       <div class="blog-date">${new Date(featured.date).toLocaleDateString()}</div>
       ${featured.image ? `<img src="${featured.image}">` : ""}
       <p>${featured.content.substring(0,180)}...</p>
-      <a href="/blog-post.html?id=${featured.id}" style="color:var(--accent);font-weight:700">Read Full Post →</a>
+      <a href="post.html?id=${featured.id}" style="color:var(--accent);font-weight:700">Read Full Post →</a>
     </div>
   `;
 
