@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page Not Found</title>
+
+<style>
+    :root {
+        --bg-1:#071226;
+        --bg-2:#041022;
+        --accent:#ff6b2d;
+        --muted:#9fb0c6;
+        --glow:0 0 20px rgba(255,107,45,0.8),0 0 35px rgba(255,107,45,0.5);
+    }
+    
+             /* reserve space for fixed navbar */
+      padding-top:72px;
+    }
+    .container{width:90%;max-width:1100px;margin:0 auto;}
+
+    /* NAVBAR (fixed) */
+    .navbar{
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      z-index:9999;
+      background:rgba(4,8,16,0.55);
+      backdrop-filter: blur(8px);
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 6px 18px rgba(0,0,0,0.45);
+    }
+    .nav-inner{
+      width:90%;
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 0;
+    }
+    .nav-left{display:flex;align-items:center;gap:12px}
+    .nav-left img{height:42px;display:block}
+    .nav-brand{font-weight:800;color:var(--accent);text-shadow:var(--glow);font-size:20px}
+    .nav-links{
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+    .nav-links a{
+      color:#fff;text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;
+      transition:.18s;
+    }
+    .nav-links a:hover{color:var(--accent);transform:translateY(-2px)}
+    .nav-cta{background:var(--accent);color:white;padding:8px 14px;border-radius:10px;font-weight:700}
+
+
+    /* hamburger */
+    .hamburger{display:none;cursor:pointer;width:42px;height:36px;background:#f24100;align-items:center;justify-content:center}
+    .hamburger .bar{display:block;width:24px;height:2px;background:#fff;border-radius:2px;position:relative;transition:all .25s}
+    .hamburger .bar:before,.hamburger .bar:after{content:'';position:absolute;left:0;width:24px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
+    .hamburger .bar:before{top:-7px}
+    .hamburger .bar:after{top:7px}
+    
+    .cta {
+            background: linear-gradient(180deg, var(--accent), #f24100);
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: .25s;
+        }
+
+        .cta:hover {
+            transform: scale(1.05);
+        }
+        
+
+    /* mobile styles */
+    @media (max-width: 880px){
+      .nav-links{position:fixed;top:72px;right:0;left:0;background:rgba(2,6,12,0.94);flex-direction:column;padding:18px 0;gap:8px;max-height:0;overflow:hidden;transition:max-height .28s ease}
+      .nav-links.open{max-height:420px}
+      .nav-links a{display:block;padding:12px 18px}
+      .hamburger{display:flex}
+    }
+
+    body {
+        margin:0;
+        height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+        background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
+        font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+        color:white;
+        padding:20px;
+    }
+
+    .wrapper {
+        max-width:480px;
+        width:100%;
+        padding:30px;
+        background:rgba(255,255,255,0.03);
+        border-radius:18px;
+        border:1px solid rgba(255,255,255,0.06);
+        box-shadow:0 8px 30px rgba(0,0,0,0.4);
+        animation: fadeIn .6s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity:0; transform:translateY(15px); }
+        to   { opacity:1; transform:translateY(0); }
+    }
+
+    .logo {
+        width:160px;
+        margin-bottom:20px;
+        filter:drop-shadow(var(--glow));
+    }
+
+    h1 {
+        font-size:36px;
+        margin:0 0 15px;
+        text-shadow:var(--glow);
+    }
+
+    p {
+        color:var(--muted);
+        font-size:16px;
+        margin-bottom:25px;
+    }
+
+</style>
+</head>
+<body>
+    
+ <!-- NAVBAR -->
+  <header class="navbar" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <img src="https://delgadohome.site/web/assets/img/banner-light.png" alt="FluxTV logo">
+        <div class="nav-brand"></div>
+      </div>
+
+      <!-- links (desktop + mobile) -->
+      <nav id="navLinks" class="nav-links" aria-label="Main links">
+        <a href="#home">Home</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#about">About</a>
+        <a href="channels">Channel Lineup</a>
+        <a href="#guide">Guide</a>
+        <a href="#support">Support</a>
+        <a class="cta" roll="button" href="#signup" style="margin-left:12px">24-hr Free Trial</a>
+      </nav>
+
+      <!-- hamburger -->
+      <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+  
+    <div class="wrapper">
+        <img class="logo" src="https://delgadohome.site/web/assets/img/banner-light.png" alt="FluxTV Logo">
+
+        <h1>404 — Page Not Found</h1>
+        <p>Looks like this page doesn't exist or has been moved.<br>
+        No worries — let’s get you back to the homepage.</p>
+
+        <a class="cta" href="/">Return Home</a>
+    </div>
+    
+      <script>
+    /* ---------- NAV TOGGLE ---------- */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    function setAria(open){
+      hamburger.setAttribute('aria-expanded', String(open));
+    }
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      setAria(isOpen);
+    });
+
+    // close menu when a nav link is clicked (mobile)
+    navLinks.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A' && window.innerWidth <= 880){
+        navLinks.classList.remove('open');
+        setAria(false);
+      }
+    });
+    </script>
+</body>
+</html>
