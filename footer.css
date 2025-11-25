@@ -1,16 +1,11 @@
 /* FOOTER STYLES */
 .flux-footer {
-  background: linear-gradient(
-      180deg,
-      rgba(4, 8, 16, 0.55),
-      rgba(2, 4, 10, 0.55)
-  );
-  backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(255,255,255,0.03);
+  background: rgba(4, 8, 16, 0.55);   /* same transparency as header */
+  backdrop-filter: blur(8px);         /* same blur */
+  border-top: 1px solid rgba(255,255,255,0.03); /* same subtle border */
   padding: 40px 0 20px;
   color: #e6eef6;
   font-size: 14px;
-}
 
 }
 
