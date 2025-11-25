@@ -331,7 +331,6 @@
     /*Review Section*/
 .reviews-section {
   padding: 70px 0;
-  text-align: center;
   background: radial-gradient(circle at center,
               rgba(255,255,255,0.02),
               rgba(0,0,0,0.25));
@@ -350,6 +349,7 @@
 
 .reviews-inner {
   display: flex;
+  white-space: nowrap;
   width: max-content;
   position: relative;
 }
@@ -357,7 +357,8 @@
 .reviews-track {
   display: flex;
   gap: 22px;
-  will-change: transform;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
     
 .review-card {
@@ -824,7 +825,7 @@ function startReviewScroll(t1, t2) {
       reviewX -= reviewSpeed;
 
       t1.style.transform = `translateX(${reviewX}px)`;
-      t2.style.transform = `translateX(${reviewX - t1.scrollWidth}px)`;
+      t2.style.transform = `translateX(${reviewX + t1.scrollWidth}px)`;
 
       // restart the loop when first track fully leaves view
       if (Math.abs(reviewX) >= t1.scrollWidth) {
