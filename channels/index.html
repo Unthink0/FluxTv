@@ -292,6 +292,11 @@
     <!-- STATUS / ERRORS -->
     <div id="status" class="status">Loading channels…</div>
 
+    <div id="last-updated" class="status">
+    Checking for last update...
+</div>
+
+
     <!-- CHANNEL LIST -->
     <section class="container">
       <div id="channelsWrapper" class="channels-wrapper"></div>
@@ -299,6 +304,35 @@
   </main>
 
   <script>
+// FluxTV — Auto Last Updated Timestamp
+async function fetchLastUpdated() {
+  const api =
+    "https://api.github.com/repos/Unthink0/FluxTv/commits?path=channels/FluxTV.m3u&per_page=1";
+
+  const box = document.getElementById("last-updated");
+
+  try {
+    const res = await fetch(api);
+    const json = await res.json();
+
+    if (!json || !json[0]) {
+      box.textContent = "Last Updated: Unable to load timestamp";
+      return;
+    }
+
+    const date = new Date(json[0].commit.committer.date);
+
+    box.innerHTML =
+      `<span style="color:white; font-weight:700;">Last Updated:</span> ` +
+      `<span style="color:var(--accent); font-weight:800;">${date.toLocaleString()}</span>`;
+  }
+  catch (e) {
+    box.textContent = "Last Updated: Error loading date";
+  }
+}
+
+fetchLastUpdated();
+
     /* ---------- NAV TOGGLE ---------- */
     const hamburger = document.getElementById('hamburger');
     const navLinks  = document.getElementById('navLinks');
