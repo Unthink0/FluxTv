@@ -1,30 +1,33 @@
 /* FOOTER STYLES */
 .flux-footer {
   background: rgba(4, 8, 16, 0.55);   /* same transparency as header */
-  backdrop-filter: blur(8px);         /* same blur */
-  border-top: 1px solid rgba(255,255,255,0.03); /* same subtle border */
-  padding: 40px 0 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* safari fix */
+  border-top: 1px solid rgba(255,255,255,0.03);
+  padding: 55px 0 25px;
   color: #e6eef6;
   font-size: 14px;
-
+  width: 100%;
+  box-shadow: 0 -6px 18px rgba(0,0,0,0.45); /* matches header’s drop shadow */
 }
 
 .footer-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 180px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 40px;
   max-width: 1300px;
   margin: auto;
-  align-items: flex-start;
+  padding: 0 20px;
 }
 
+/* ABOUT SECTION */
 .footer-about .footer-logo {
   width: 120px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .footer-about h3 {
-  margin: 10px 0;
+  margin: 12px 0;
   font-size: 20px;
   color: #fff;
 }
@@ -32,19 +35,20 @@
 .footer-about p {
   color: #d8d8d8;
   font-size: 14px;
-  line-height: 1.5;
-  max-width: 300px;
+  line-height: 1.6;
+  max-width: 330px;
 }
 
+/* COLUMN LINKS */
 .footer-col h4 {
-  margin-bottom: 10px;
+  margin-bottom: 14px;
   font-size: 18px;
   color: #fff;
 }
 
 .footer-col a {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: #d7d7d7;
   text-decoration: none;
   transition: .2s;
@@ -55,25 +59,27 @@
   transform: translateX(4px);
 }
 
+/* SECURE BADGE */
 .footer-secure {
   text-align: center;
 }
 
 .footer-secure .secure-icon {
   width: 90px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
+/* COPYRIGHT */
 .footer-bottom {
   text-align: center;
-  padding-top: 25px;
+  padding-top: 28px;
   font-size: 13px;
   color: #bfbfbf;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  margin-top: 30px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin-top: 40px;
 }
 
-/* Mobile */
+/* MOBILE RESPONSIVE */
 @media (max-width: 900px) {
   .footer-inner {
     grid-template-columns: 1fr 1fr;
