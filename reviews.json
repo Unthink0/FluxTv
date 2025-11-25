@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Jason P.",
+    "country": "us",
+    "review": "Best IPTV service I've ever used! Stable and tons of channels.",
+    "stars": 5
+  },
+  {
+    "name": "Melissa R.",
+    "country": "ca",
+    "review": "Streams are super fast and customer service helped instantly.",
+    "stars": 5
+  },
+  {
+    "name": "Kevin T.",
+    "country": "gb",
+    "review": "Love that it works on my Firestick, phone, and laptop.",
+    "stars": 5
+  },
+  {
+    "name": "Sarah M.",
+    "country": "au",
+    "review": "The VOD library is HUGE. All movies load instantly.",
+    "stars": 5
+  },
+  {
+    "name": "Tony D.",
+    "country": "de",
+    "review": "Super affordable and way more channels than cable.",
+    "stars": 5
+  }
+]
