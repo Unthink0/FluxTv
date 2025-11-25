@@ -1,7 +1,7 @@
 /* FOOTER STYLES */
 .flux-footer {
     background:rgba(4,8,16,0.55);
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(5px);
   padding: 50px 20px 20px;
   color: white;
   border-top: 1px solid rgba(255,255,255,0.1);
