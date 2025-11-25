@@ -344,18 +344,23 @@
 }
 
 .reviews-scroller {
-  overflow: hidden;
   width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.reviews-inner {
+  display: flex;
+  width: max-content;
 }
 
 .reviews-track {
   display: flex;
   gap: 22px;
   align-items: center;
-  padding: 20px 0;
   will-change: transform;
 }
-
+    
 .review-card {
   min-width: 260px;
   background: var(--card);
@@ -613,9 +618,12 @@
 <section class="reviews-section">
   <h2 class="reviews-title">What Our Customers Say About FluxTV</h2>
 
-  <div class="reviews-scroller">
-    <div class="reviews-track" id="reviewsTrack"></div>
-  </div>
+ <div class="reviews-scroller">
+    <div class="reviews-inner">
+        <div class="reviews-track" id="reviewsTrack"></div>
+        <div class="reviews-track" id="reviewsTrackClone"></div>
+    </div>
+</div>
 </section>
   </main>
 
@@ -808,11 +816,39 @@ async function loadReviews() {
     });
 
     // Duplicate for infinite scrolling
-    const clone = track.cloneNode(true);
-    clone.id = "";
-    track.parentNode.appendChild(clone);
+  async function loadReviews() {
+  const track = document.getElementById("reviewsTrack");
+  const cloneTrack = document.getElementById("reviewsTrackClone");
 
-    startReviewScroll(track, clone);
+  const res = await fetch("/reviews/reviews.json");
+  const reviews = await res.json();
+
+  // build original cards
+  reviews.forEach(r => {
+    track.appendChild(buildCard(r));
+  });
+
+  // build clone cards
+  reviews.forEach(r => {
+    cloneTrack.appendChild(buildCard(r));
+  });
+
+  startReviewScroll(track, cloneTrack);
+}
+
+function buildCard(r) {
+  const card = document.createElement("div");
+  card.className = "review-card";
+  card.innerHTML = `
+    <div class="reviewer">
+      <img class="flag-avatar" src="https://flagcdn.com/h80/${r.country}.png">
+      <div><div>${r.name}</div></div>
+    </div>
+    <div class="stars">${"★".repeat(r.stars)}</div>
+    <p>${r.review}</p>
+  `;
+  return card;
+}
 
   } catch (err) {
     document.getElementById("reviewsTrack").innerHTML =
