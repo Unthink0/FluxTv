@@ -26,6 +26,28 @@
     h1{margin:0 0 12px;font-size:28px}
     @media(min-width:900px){h1{font-size:40px}}
     p.lead{margin:0 0 20px;color:var(--muted);max-width:60ch}
+
+    * FEATURES */
+    .features{
+      padding:48px 0;
+    }
+    .features-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+    @media(min-width:800px){
+      .features-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    .feature{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+      padding:18px;
+      border-radius:12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      min-height:120px;
+    }
+    .feature h3{margin:0 0 8px 0;font-size:16px}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
     /* pricing + plans */
     #pricing-desc{margin-bottom:25px;color:var(--muted)}
     .device-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px}
