@@ -232,6 +232,23 @@
       font-size:14px;
     }
     .status.error{color:#ff7b7b}
+    .status-bar {
+    display: flex;
+    justify-content: center; /* centers everything */
+    align-items: center;
+    gap: 12px;               /* spacing around the | */
+    width: 100%;
+    margin-bottom: 15px;
+    color: var(--muted);
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+.status-bar .divider {
+    color: var(--muted);
+    opacity: 0.5;
+    font-weight: 600;
+}
   </style>
 </head>
 <body>
@@ -290,11 +307,12 @@
     </section>
 
     <!-- STATUS / ERRORS -->
-    <div id="status" class="status">Loading channels…</div>
-
-    <div id="last-updated" class="status">
-    Checking for last update...
+<div class="status-bar">
+    <div id="status">Loading channels…</div>
+    <span class="divider">|</span>
+    <div id="last-updated">Checking for last update...</div>
 </div>
+
 
 
     <!-- CHANNEL LIST -->
