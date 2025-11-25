@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <title>Guide Post</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Markdown Parser -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <style>
 :root {
   --bg1:#071226;
@@ -12,48 +16,67 @@
   --accent:#ff6b2d;
   --muted:#9fb0c6;
 }
+
 body {
-  background:linear-gradient(180deg,var(--bg1),var(--bg2));
-  margin:0;
-  font-family:Inter,sans-serif;
-  color:white;
-  padding:30px;
+  background: linear-gradient(180deg, var(--bg1), var(--bg2));
+  margin: 0;
+  font-family: Inter, sans-serif;
+  color: white;
+  padding: 25px;
 }
+
 .post-container {
-  max-width:850px;
-  margin:0 auto;
-  background:var(--card);
-  padding:25px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,0.1);
-  box-shadow:0 6px 25px rgba(0,0,0,0.45);
+  max-width: 850px;
+  margin: 0 auto;
+  background: var(--card);
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.45);
 }
+
 .post-title {
-  font-size:32px;
-  font-weight:700;
-  color:var(--accent);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
 }
+
 .post-date {
-  font-size:14px;
-  color:var(--muted);
-  margin-bottom:18px;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 18px;
 }
+
 .post-image {
-  width:100%;
-  border-radius:12px;
-  margin:15px 0;
+  width: 100%;
+  border-radius: 12px;
+  margin: 15px 0;
 }
+
 .post-content {
-  font-size:17px;
-  line-height:1.55;
+  font-size: 17px;
+  line-height: 1.65;
 }
+
 .back {
-  display:inline-block;
-  margin-bottom:20px;
-  color:var(--accent);
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
+  display: inline-block;
+  margin-bottom: 20px;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 15px;
+  }
+  .post-container {
+    padding: 18px;
+  }
+  .post-title {
+    font-size: 26px;
+  }
 }
 </style>
 </head>
@@ -80,11 +103,14 @@ async function loadPost() {
       return;
     }
 
+    // Convert markdown → HTML safely
+    const formattedContent = marked.parse(post.content || "");
+
     box.innerHTML = `
       <div class="post-title">${post.title}</div>
       <div class="post-date">${new Date(post.date).toLocaleDateString()}</div>
       ${post.image ? `<img src="${post.image}" class="post-image">` : ""}
-      <div class="post-content">${post.content.replace(/\n/g, "<br>")}</div>
+      <div class="post-content">${formattedContent}</div>
     `;
   } catch(err) {
     box.innerHTML = "Error loading post.";
