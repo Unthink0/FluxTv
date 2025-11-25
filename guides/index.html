@@ -176,7 +176,7 @@ function renderPosts(){
 
     const card = document.createElement("div");
     card.className = "blog-card";
-    card.onclick = ()=> window.location.href = `/blog-post.html?id=${post.id}`;
+    card.onclick = ()=> window.location.href = `/post.html?id=${post.id}`;
 
     card.innerHTML = `
       <div class="blog-title">${post.title}</div>
