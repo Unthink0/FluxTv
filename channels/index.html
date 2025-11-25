@@ -304,34 +304,6 @@
   </main>
 
   <script>
-// Display GitHub last-updated time for FluxTV.m3u
-async function fetchLastUpdated() {
-  const api = "https://api.github.com/repos/Unthink0/FluxTv/commits?path=channels/FluxTV.m3u&per_page=1";
-
-  try {
-    const res = await fetch(api);
-    const data = await res.json();
-
-    if (!data || !data[0]) {
-      document.getElementById("last-updated").textContent =
-        "Last Updated: Unable to retrieve timestamp.";
-      return;
-    }
-
-    const date = new Date(data[0].commit.committer.date);
-
-    document.getElementById("last-updated").textContent =
-      "Last Updated: " + date.toLocaleString();
-  } 
-  catch (err) {
-    document.getElementById("last-updated").textContent =
-      "Last Updated: Error loading date.";
-  }
-}
-
-// Load on page startup
-fetchLastUpdated();
-
     /* ---------- NAV TOGGLE ---------- */
     const hamburger = document.getElementById('hamburger');
     const navLinks  = document.getElementById('navLinks');
@@ -527,6 +499,33 @@ allChannels.forEach(ch => {
           `Showing ${totalShown} channel${totalShown !== 1 ? 's' : ''} in ${categoriesToShow.length} categor${categoriesToShow.length !== 1 ? 'ies' : 'y'}.`;
       }
     }
+    // Display GitHub last-updated time for FluxTV.m3u
+async function fetchLastUpdated() {
+  const api = "https://api.github.com/repos/Unthink0/FluxTv/commits?path=channels/FluxTV.m3u&per_page=1";
+
+  try {
+    const res = await fetch(api);
+    const data = await res.json();
+
+    if (!data || !data[0]) {
+      document.getElementById("last-updated").textContent =
+        "Last Updated: Unable to retrieve timestamp.";
+      return;
+    }
+
+    const date = new Date(data[0].commit.committer.date);
+
+    document.getElementById("last-updated").textContent =
+      "Last Updated: " + date.toLocaleString();
+  } 
+  catch (err) {
+    document.getElementById("last-updated").textContent =
+      "Last Updated: Error loading date.";
+  }
+}
+
+// Load on page startup
+fetchLastUpdated();
   </script>
 </body>
 </html>
