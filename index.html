@@ -379,11 +379,12 @@
   margin-bottom: 10px;
 }
 
-.reviewer img {
+.flag-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
   border: 2px solid var(--accent);
+  object-fit: cover;
 }
 
 .flag {
@@ -771,54 +772,61 @@ a.textContent = 'Choose Plan';
     startScroller('devices-track', 0.25);
     startScroller('countries-track', 0.18);
 
-    /* ==============================
-      LOAD REVIEWS FROM JSON
-============================== */
+/* -------------------------------------------
+   LOAD CUSTOMER REVIEWS (with flag avatars)
+-------------------------------------------- */
 
-let reviewSpeed = 0.4;
+let reviewSpeed = 0.35;
 let reviewX = 0;
 let paused = false;
 
 async function loadReviews() {
   const track = document.getElementById("reviewsTrack");
 
-  const res = await fetch("/reviews/reviews.json");
-  const reviews = await res.json();
+  try {
+    const res = await fetch("/reviews.json");
+    const reviews = await res.json();
 
-  // Build review cards with FLAG avatars
-  reviews.forEach(r => {
-    const card = document.createElement("div");
-    card.className = "review-card";
-    card.innerHTML = `
-      <div class="reviewer">
-        <img class="flag-avatar" src="https://flagcdn.com/h80/${r.country}.png">
-        <div>
+    if (!Array.isArray(reviews) || reviews.length === 0) {
+      track.innerHTML = "<p>No reviews available.</p>";
+      return;
+    }
+
+    // Build review cards
+    reviews.forEach(r => {
+      const card = document.createElement("div");
+      card.className = "review-card";
+      card.innerHTML = `
+        <div class="reviewer">
+          <img class="flag-avatar" src="https://flagcdn.com/h80/${r.country}.png">
           <div>${r.name}</div>
         </div>
-      </div>
-      <div class="stars">${"★".repeat(r.stars)}</div>
-      <p>${r.review}</p>
-    `;
-    track.appendChild(card);
-  });
+        <div class="stars">${"★".repeat(r.stars)}</div>
+        <p>${r.review}</p>
+      `;
+      track.appendChild(card);
+    });
 
-  // Duplicate cards for infinite loop
-  const clone = track.cloneNode(true);
-  clone.id = "";
-  track.parentNode.appendChild(clone);
+    // Duplicate for infinite scrolling
+    const clone = track.cloneNode(true);
+    clone.id = "";
+    track.parentNode.appendChild(clone);
 
-  startReviewScroll(track, clone);
+    startReviewScroll(track, clone);
+
+  } catch (err) {
+    document.getElementById("reviewsTrack").innerHTML =
+      "<p style='color:var(--muted)'>Unable to load reviews.</p>";
+  }
 }
 
-/* ==============================
-      INFINITE SCROLL
-============================== */
 function startReviewScroll(track1, track2) {
   function loop() {
     if (!paused) {
       reviewX -= reviewSpeed;
       track1.style.transform = `translateX(${reviewX}px)`;
-      track2.style.transform = `translateX(${reviewX + track1.scrollWidth}px)`;
+      track2.style.transform =
+        `translateX(${reviewX + track1.scrollWidth}px)`;
 
       if (Math.abs(reviewX) >= track1.scrollWidth) {
         reviewX = 0;
@@ -829,9 +837,6 @@ function startReviewScroll(track1, track2) {
   loop();
 }
 
-/* ==============================
-      PAUSE ON HOVER
-============================== */
 document.addEventListener("mouseover", e => {
   if (e.target.closest(".reviews-section")) paused = true;
 });
