@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Welcome to FluxTV",
+    "date": "2025-01-15",
+    "image": "https://delgadohome.site/web/assets/img/banner-light.png",
+    "category": "Announcements",
+    "tags": ["update", "new features"],
+    "content": "Full content of the blog post..."
+  },
+  {
+    "id": 2,
+    "title": "New Channels Added",
+    "date": "2025-01-10",
+    "image": "",
+    "category": "Channels",
+    "tags": ["channels", "expansion"],
+    "content": "Full detailed content..."
+  }
+]
