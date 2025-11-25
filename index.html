@@ -328,7 +328,82 @@
             font-size: 15px;
             line-height: 1.45;
         }
+    /*Review Section*/
+.reviews-section {
+  padding: 70px 0;
+  text-align: center;
+  background: radial-gradient(circle at center,
+              rgba(255,255,255,0.02),
+              rgba(0,0,0,0.25));
+}
 
+.reviews-title {
+  font-size: 34px;
+  margin-bottom: 35px;
+  color: white;
+}
+
+.reviews-scroller {
+  overflow: hidden;
+  width: 100%;
+}
+
+.reviews-track {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  padding: 20px 0;
+  will-change: transform;
+}
+
+.review-card {
+  min-width: 260px;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.45);
+  flex-shrink: 0;
+  text-align: left;
+  transition: 0.2s;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+}
+
+.reviewer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.reviewer img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+}
+
+.flag {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.stars {
+  color: #ffbf00;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.review-card p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
   </style>
 </head>
 <body>
@@ -533,6 +608,14 @@
         <a class="cta" roll="button" href="/channels">View Channel Lineup</a>
       </div>
     </section>
+    <!-- CUSTOMER REVIEWS -->
+<section class="reviews-section">
+  <h2 class="reviews-title">What Our Customers Say About FluxTV</h2>
+
+  <div class="reviews-scroller">
+    <div class="reviews-track" id="reviewsTrack"></div>
+  </div>
+</section>
   </main>
 
   <script>
@@ -687,6 +770,77 @@ a.textContent = 'Choose Plan';
     }
     startScroller('devices-track', 0.25);
     startScroller('countries-track', 0.18);
+
+    /* ==============================
+      LOAD REVIEWS FROM JSON
+============================== */
+
+let reviewSpeed = 0.4;
+let reviewX = 0;
+let paused = false;
+
+async function loadReviews() {
+  const track = document.getElementById("reviewsTrack");
+
+  const res = await fetch("/reviews/reviews.json");
+  const reviews = await res.json();
+
+  // Build review cards with FLAG avatars
+  reviews.forEach(r => {
+    const card = document.createElement("div");
+    card.className = "review-card";
+    card.innerHTML = `
+      <div class="reviewer">
+        <img class="flag-avatar" src="https://flagcdn.com/h80/${r.country}.png">
+        <div>
+          <div>${r.name}</div>
+        </div>
+      </div>
+      <div class="stars">${"★".repeat(r.stars)}</div>
+      <p>${r.review}</p>
+    `;
+    track.appendChild(card);
+  });
+
+  // Duplicate cards for infinite loop
+  const clone = track.cloneNode(true);
+  clone.id = "";
+  track.parentNode.appendChild(clone);
+
+  startReviewScroll(track, clone);
+}
+
+/* ==============================
+      INFINITE SCROLL
+============================== */
+function startReviewScroll(track1, track2) {
+  function loop() {
+    if (!paused) {
+      reviewX -= reviewSpeed;
+      track1.style.transform = `translateX(${reviewX}px)`;
+      track2.style.transform = `translateX(${reviewX + track1.scrollWidth}px)`;
+
+      if (Math.abs(reviewX) >= track1.scrollWidth) {
+        reviewX = 0;
+      }
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+/* ==============================
+      PAUSE ON HOVER
+============================== */
+document.addEventListener("mouseover", e => {
+  if (e.target.closest(".reviews-section")) paused = true;
+});
+document.addEventListener("mouseout", e => {
+  if (e.target.closest(".reviews-section")) paused = false;
+});
+
+loadReviews();
+
   </script>
 </body>
 </html>
