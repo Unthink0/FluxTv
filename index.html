@@ -344,20 +344,19 @@
 }
 
 .reviews-scroller {
-  width: 100%;
   overflow: hidden;
-  position: relative;
+  width: 100%;
 }
 
 .reviews-inner {
   display: flex;
   width: max-content;
+  position: relative;
 }
 
 .reviews-track {
   display: flex;
   gap: 22px;
-  align-items: center;
   will-change: transform;
 }
     
@@ -618,12 +617,12 @@
 <section class="reviews-section">
   <h2 class="reviews-title">What Our Customers Say About FluxTV</h2>
 
- <div class="reviews-scroller">
+  <div class="reviews-scroller">
     <div class="reviews-inner">
-        <div class="reviews-track" id="reviewsTrack"></div>
-        <div class="reviews-track" id="reviewsTrackClone"></div>
+      <div class="reviews-track" id="reviewsTrack"></div>
+      <div class="reviews-track" id="reviewsTrackClone"></div>
     </div>
-</div>
+  </div>
 </section>
   </main>
 
@@ -784,65 +783,18 @@ a.textContent = 'Choose Plan';
    LOAD CUSTOMER REVIEWS (with flag avatars)
 -------------------------------------------- */
 
-let reviewSpeed = 0.35;
-let reviewX = 0;
 let paused = false;
+let reviewX = 0;
+let reviewSpeed = 0.4;
 
-async function loadReviews() {
-  const track = document.getElementById("reviewsTrack");
-
-  try {
-    const res = await fetch("/reviews.json");
-    const reviews = await res.json();
-
-    if (!Array.isArray(reviews) || reviews.length === 0) {
-      track.innerHTML = "<p>No reviews available.</p>";
-      return;
-    }
-
-    // Build review cards
-    reviews.forEach(r => {
-      const card = document.createElement("div");
-      card.className = "review-card";
-      card.innerHTML = `
-        <div class="reviewer">
-          <img class="flag-avatar" src="https://flagcdn.com/h80/${r.country}.png">
-          <div>${r.name}</div>
-        </div>
-        <div class="stars">${"★".repeat(r.stars)}</div>
-        <p>${r.review}</p>
-      `;
-      track.appendChild(card);
-    });
-
-    // Duplicate for infinite scrolling
-  async function loadReviews() {
-  const track = document.getElementById("reviewsTrack");
-  const cloneTrack = document.getElementById("reviewsTrackClone");
-
-  const res = await fetch("/reviews/reviews.json");
-  const reviews = await res.json();
-
-  // build original cards
-  reviews.forEach(r => {
-    track.appendChild(buildCard(r));
-  });
-
-  // build clone cards
-  reviews.forEach(r => {
-    cloneTrack.appendChild(buildCard(r));
-  });
-
-  startReviewScroll(track, cloneTrack);
-}
-
+// Build card function
 function buildCard(r) {
   const card = document.createElement("div");
   card.className = "review-card";
   card.innerHTML = `
     <div class="reviewer">
       <img class="flag-avatar" src="https://flagcdn.com/h80/${r.country}.png">
-      <div><div>${r.name}</div></div>
+      <div>${r.name}</div>
     </div>
     <div class="stars">${"★".repeat(r.stars)}</div>
     <p>${r.review}</p>
@@ -850,21 +802,32 @@ function buildCard(r) {
   return card;
 }
 
-  } catch (err) {
-    document.getElementById("reviewsTrack").innerHTML =
-      "<p style='color:var(--muted)'>Unable to load reviews.</p>";
-  }
+async function loadReviews() {
+  const track1 = document.getElementById("reviewsTrack");
+  const track2 = document.getElementById("reviewsTrackClone");
+
+  const res = await fetch("/reviews/reviews.json");
+  const reviews = await res.json();
+
+  // Fill first track
+  reviews.forEach(r => track1.appendChild(buildCard(r)));
+
+  // Fill second track (clone)
+  reviews.forEach(r => track2.appendChild(buildCard(r)));
+
+  startReviewScroll(track1, track2);
 }
 
-function startReviewScroll(track1, track2) {
+function startReviewScroll(t1, t2) {
   function loop() {
     if (!paused) {
       reviewX -= reviewSpeed;
-      track1.style.transform = `translateX(${reviewX}px)`;
-      track2.style.transform =
-        `translateX(${reviewX + track1.scrollWidth}px)`;
 
-      if (Math.abs(reviewX) >= track1.scrollWidth) {
+      t1.style.transform = `translateX(${reviewX}px)`;
+      t2.style.transform = `translateX(${reviewX + t1.scrollWidth}px)`;
+
+      // restart the loop when first track fully leaves view
+      if (Math.abs(reviewX) >= t1.scrollWidth) {
         reviewX = 0;
       }
     }
@@ -873,9 +836,11 @@ function startReviewScroll(track1, track2) {
   loop();
 }
 
+// Pause scrolling on hover
 document.addEventListener("mouseover", e => {
   if (e.target.closest(".reviews-section")) paused = true;
 });
+
 document.addEventListener("mouseout", e => {
   if (e.target.closest(".reviews-section")) paused = false;
 });
