@@ -824,11 +824,11 @@ function startReviewScroll(t1, t2) {
       reviewX -= reviewSpeed;
 
       t1.style.transform = `translateX(${reviewX}px)`;
-      t2.style.transform = `translateX(${reviewX + t1.scrollWidth}px)`;
+      t2.style.transform = `translateX(${reviewX - t1.scrollWidth}px)`;
 
       // restart the loop when first track fully leaves view
       if (Math.abs(reviewX) >= t1.scrollWidth) {
-        reviewX = 3;
+        reviewX = 0;
       }
     }
     requestAnimationFrame(loop);
