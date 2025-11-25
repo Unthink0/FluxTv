@@ -806,7 +806,7 @@ async function loadReviews() {
   const track1 = document.getElementById("reviewsTrack");
   const track2 = document.getElementById("reviewsTrackClone");
 
-  const res = await fetch("/reviews/reviews.json");
+  const res = await fetch("/reviews.json");
   const reviews = await res.json();
 
   // Fill first track
