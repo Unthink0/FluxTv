@@ -828,7 +828,7 @@ function startReviewScroll(t1, t2) {
 
       // restart the loop when first track fully leaves view
       if (Math.abs(reviewX) >= t1.scrollWidth) {
-        reviewX = 0;
+        reviewX = 3;
       }
     }
     requestAnimationFrame(loop);
