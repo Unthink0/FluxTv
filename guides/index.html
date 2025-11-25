@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Guides</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg1:#071226; --bg2:#041022;
+  --card:#0d1b2b; --accent:#ff6b2d;
+  --muted:#9fb0c6;
+}
+body{
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  font-family:Inter,sans-serif;
+  margin:0; padding:25px;
+  color:white;
+}
+h1{ text-align:center; font-size:40px; margin-bottom:15px; }
+
+#search-container {
+  max-width:850px;
+  margin:0 auto 25px;
+}
+#search {
+  width:100%; padding:12px; border-radius:10px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.06);
+  color:white;
+  font-size:16px;
+}
+
+.category-bar {
+  max-width:850px;
+  margin:0 auto 20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.category-btn {
+  background:rgba(255,255,255,0.06);
+  padding:8px 14px;
+  border-radius:10px;
+  font-size:14px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:.2s;
+}
+.category-btn.active,
+.category-btn:hover {
+  background:var(--accent);
+  color:white;
+  border-color:var(--accent);
+}
+
+.featured {
+  max-width:850px;
+  margin:0 auto 35px;
+  background:linear-gradient(180deg,#11233a,#0a182a);
+  padding:22px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 8px 30px rgba(0,0,0,0.45);
+}
+.featured h2 { margin:0 0 10px; color:var(--accent); }
+.featured img {
+  width:100%; border-radius:12px; margin:14px 0;
+}
+
+.blog-container {
+  max-width:850px;
+  margin:0 auto;
+  display:flex; flex-direction:column;
+  gap:22px;
+}
+.blog-card{
+  background:var(--card);
+  padding:20px;
+  border-radius:16px;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,0.08);
+  transition:.25s;
+}
+.blog-card:hover{ transform:translateY(-5px); }
+.blog-title{ font-size:22px; font-weight:700; color:var(--accent); }
+.blog-date{ font-size:13px; color:var(--muted); margin-bottom:12px; }
+.blog-image{ width:100%; height:auto; border-radius:12px; margin:10px 0; }
+.blog-preview{ font-size:16px; color:#dfe7f0; line-height:1.5; }
+
+.tag-list{ margin-top:10px; display:flex; flex-wrap:wrap; gap:6px; }
+.tag{
+  padding:4px 8px; background:rgba(255,255,255,0.08);
+  border-radius:6px; font-size:12px; color:var(--muted);
+}
+.tag:hover{ background:var(--accent); color:white; }
+
+</style>
+</head>
+
+<body>
+
+<h1>FluxTV Guides</h1>
+
+<div id="search-container">
+  <input id="search" type="text" placeholder="Search blog posts...">
+</div>
+
+<div class="category-bar" id="categoryBar"></div>
+
+<div id="featured"></div>
+
+<div id="blog" class="blog-container"></div>
+
+<script>
+let allPosts = [];
+let activeCategory = "All";
+
+/* Load Posts */
+async function loadPosts(){
+  const blogBox = document.getElementById("blog");
+  const featuredBox = document.getElementById("featured");
+  const categoryBar = document.getElementById("categoryBar");
+
+  const res = await fetch("/guides/posts.json");
+  allPosts = await res.json();
+
+  // Build category list
+  const categories = ["All", ...new Set(allPosts.map(p=>p.category))];
+  categories.forEach(cat=>{
+    const btn = document.createElement("div");
+    btn.className = "category-btn" + (cat==="All" ? " active":"");
+    btn.textContent = cat;
+    btn.onclick = ()=>{
+      activeCategory = cat;
+      document.querySelectorAll(".category-btn").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      renderPosts();
+    };
+    categoryBar.appendChild(btn);
+  });
+
+  // Featured post = newest
+  const featured = allPosts.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+  featuredBox.innerHTML = `
+    <div class="featured">
+      <h2>Featured Post</h2>
+      <h3>${featured.title}</h3>
+      <div class="blog-date">${new Date(featured.date).toLocaleDateString()}</div>
+      ${featured.image ? `<img src="${featured.image}">` : ""}
+      <p>${featured.content.substring(0,180)}...</p>
+      <a href="/blog-post.html?id=${featured.id}" style="color:var(--accent);font-weight:700">Read Full Post →</a>
+    </div>
+  `;
+
+  renderPosts();
+}
+
+/* Render Posts */
+function renderPosts(){
+  const blogBox = document.getElementById("blog");
+  const searchTerm = document.getElementById("search").value.toLowerCase();
+  blogBox.innerHTML = "";
+
+  let filtered = allPosts
+    .filter(p => activeCategory==="All" || p.category === activeCategory)
+    .filter(p =>
+      p.title.toLowerCase().includes(searchTerm) ||
+      p.content.toLowerCase().includes(searchTerm) ||
+      (p.tags || []).some(t=>t.toLowerCase().includes(searchTerm))
+    )
+    .sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  filtered.forEach(post=>{
+    const preview = post.content.substring(0,150) + "...";
+
+    const card = document.createElement("div");
+    card.className = "blog-card";
+    card.onclick = ()=> window.location.href = `/blog-post.html?id=${post.id}`;
+
+    card.innerHTML = `
+      <div class="blog-title">${post.title}</div>
+      <div class="blog-date">${new Date(post.date).toLocaleDateString()}</div>
+      ${post.image ? `<img src="${post.image}" class="blog-image">` : ""}
+      <div class="blog-preview">${preview}</div>
+      <div class="tag-list">
+        ${(post.tags || []).map(t=>`<div class="tag">${t}</div>`).join("")}
+      </div>
+    `;
+
+    blogBox.appendChild(card);
+  });
+}
+
+document.getElementById("search").addEventListener("input", renderPosts);
+
+loadPosts();
+</script>
+
+</body>
+</html>
