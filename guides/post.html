@@ -26,13 +26,28 @@ body {
   padding: 25px;
 }
 
+/* -------------------------------------------------
+   FLOATING BACK TO GUIDES BUTTON  (TOP LEFT)
+------------------------------------------------- */
 .back {
-  display: inline-block;
-  margin-bottom: 20px;
+  position: fixed;
+  top: 20px;
+  left: 25px;
+  z-index: 9999;
+  background: rgba(0,0,0,0.35);
+  padding: 8px 14px;
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
   color: var(--accent);
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
+  transition: .25s;
+}
+
+.back:hover {
+  background: rgba(0,0,0,0.55);
+  transform: translateY(-2px);
 }
 
 /* -------------------------------------------------
@@ -40,7 +55,7 @@ body {
 ------------------------------------------------- */
 .post-content {
   max-width: 850px;
-  margin: 0 auto;
+  margin: 80px auto 0 auto;
   background: var(--card);
   padding: 25px;
   border-radius: 16px;
@@ -66,7 +81,7 @@ body {
 }
 
 /* -------------------------------------------------
-   IMAGE RULES (MERGED & FIXED)
+   IMAGE RULES
 ------------------------------------------------- */
 .post-content img {
   max-width: 100%;
@@ -78,8 +93,6 @@ body {
   cursor: zoom-in;
   transition: box-shadow .25s, transform .25s;
   box-shadow: 0 8px 25px rgba(0,0,0,0.35);
-
-  /* fade-in */
   opacity: 0;
   animation: fadeIn .7s ease forwards;
   animation-delay: .2s;
@@ -105,7 +118,7 @@ body {
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 99999;
   cursor: zoom-out;
 }
 
@@ -126,7 +139,7 @@ body {
   height: 4px;
   background: #ff6b2d;
   width: 0%;
-  z-index: 9999;
+  z-index: 999999;
   box-shadow: 0 0 10px #ff6b2d;
 }
 
@@ -135,7 +148,7 @@ body {
 ------------------------------------------------- */
 #toc {
   max-width: 850px;
-  margin: 0 auto 35px auto;
+  margin: 90px auto 35px auto;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
   padding: 20px;
@@ -143,29 +156,16 @@ body {
 }
 
 #toc h3 {
-  margin-top: 0;
-  margin-bottom: 12px;
+  margin: 0 0 12px;
   font-size: 20px;
   font-weight: 700;
 }
 
-#toc ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-#toc li {
-  margin: 6px 0;
-}
-
 #toc a {
-  color: #ff6b2d;
+  color: var(--accent);
   text-decoration: none;
 }
-
-#toc a:hover {
-  text-decoration: underline;
-}
+#toc a:hover { text-decoration: underline; }
 
 /* -------------------------------------------------
    Fade-in Animation
@@ -177,22 +177,43 @@ body {
 }
 
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.fade-in.delay-1 { animation-delay: .1s; }
-.fade-in.delay-2 { animation-delay: .2s; }
-.fade-in.delay-3 { animation-delay: .3s; }
-.fade-in.delay-4 { animation-delay: .4s; }
+/* -------------------------------------------------
+   FLOATING BACK TO TOP BUTTON
+------------------------------------------------- */
+#backToTop {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  font-size: 26px;
+  font-weight: 900;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(255,107,45,0.7);
+  transition: transform .25s, opacity .25s, box-shadow .25s;
+  z-index: 9999;
+}
 
+#backToTop:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 25px rgba(255,107,45,0.9);
+}
 </style>
 </head>
 
 <body>
 
+<!-- FLOATING BACK BUTTON -->
 <div class="back" onclick="history.back()">← Back to Guides</div>
 
 <div id="progressBar"></div>
@@ -204,9 +225,10 @@ body {
 
 <div class="post-content fade-in delay-2" id="postContent"></div>
 
-<div id="imgZoomModal">
-  <img id="zoomedImage" src="">
-</div>
+<div id="imgZoomModal"><img id="zoomedImage" src=""></div>
+
+<!-- FLOATING TOP BUTTON -->
+<button id="backToTop" title="Back to top">↑</button>
 
 <script>
 /* ------------------------------------------
@@ -222,21 +244,16 @@ async function loadPost() {
     const posts = await res.json();
     const post = posts.find(p => String(p.id) === String(id));
 
-    if (!post) {
-      box.innerHTML = "Post not found.";
-      return;
-    }
+    if (!post) { box.innerHTML = "Post not found."; return; }
 
     let formattedContent = marked.parse(post.content || "");
-    if (!formattedContent.trim()) {
-      formattedContent = "<p>No content available.</p>";
-    }
+    if (!formattedContent.trim()) formattedContent = "<p>No content available.</p>";
 
     box.innerHTML = `
-      <div class="post-title delay-1 fade-in">${post.title}</div>
-      <div class="post-date delay-1 fade-in">${new Date(post.date).toLocaleDateString()}</div>
-      ${post.image ? `<img src="${post.image}" class="delay-1 fade-in">` : ""}
-      <div class="delay-2 fade-in">${formattedContent}</div>
+      <div class="post-title fade-in">${post.title}</div>
+      <div class="post-date fade-in">${new Date(post.date).toLocaleDateString()}</div>
+      ${post.image ? `<img src="${post.image}" class="fade-in">` : ""}
+      <div class="fade-in">${formattedContent}</div>
     `;
 
     generateTOC();
@@ -254,25 +271,33 @@ loadPost();
 document.addEventListener("click", function(e) {
   if (e.target.matches(".post-content img")) {
     const modal = document.getElementById("imgZoomModal");
-    const zoomImg = document.getElementById("zoomedImage");
-
-    zoomImg.src = e.target.src;
+    document.getElementById("zoomedImage").src = e.target.src;
     modal.style.display = "flex";
   }
 });
-
 document.getElementById("imgZoomModal").addEventListener("click", () => {
   document.getElementById("imgZoomModal").style.display = "none";
 });
 
 /* ------------------------------------------
-   Scroll Progress Bar
+   Scroll Progress Bar + Top Button
 ------------------------------------------ */
 window.addEventListener("scroll", () => {
   const scrollTop = window.scrollY;
   const docHeight = document.body.scrollHeight - window.innerHeight;
-  const progress = (scrollTop / docHeight) * 100;
-  document.getElementById("progressBar").style.width = progress + "%";
+  document.getElementById("progressBar").style.width = (scrollTop / docHeight) * 100 + "%";
+
+  const btn = document.getElementById("backToTop");
+  if (scrollTop > 300) {
+    btn.style.display = "flex";
+    btn.style.opacity = "1";
+  } else {
+    btn.style.opacity = "0";
+    setTimeout(() => btn.style.display = "none", 200);
+  }
+});
+document.getElementById("backToTop").addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 /* ------------------------------------------
@@ -281,34 +306,22 @@ window.addEventListener("scroll", () => {
 function generateTOC() {
   const content = document.querySelector(".post-content");
   const tocList = document.getElementById("tocList");
-
   tocList.innerHTML = "";
 
-  const headings = content.querySelectorAll("h1, h2, h3");
-
-  headings.forEach((h, i) => {
+  content.querySelectorAll("h1,h2,h3").forEach((h, i) => {
     const id = "heading-" + i;
     h.id = id;
-
-    const li = document.createElement("li");
-    const a = document.createElement("a");
-
-    a.textContent = h.textContent;
-    a.href = "#" + id;
-
-    li.appendChild(a);
-    tocList.appendChild(li);
+    tocList.innerHTML += `<li><a href="#${id}">${h.textContent}</a></li>`;
   });
 }
 
 /* ------------------------------------------
-   Smooth Scroll for TOC
+   Smooth Scroll TOC
 ------------------------------------------ */
 document.addEventListener("click", (e) => {
   if (e.target.matches("#toc a")) {
     e.preventDefault();
-    document.querySelector(e.target.getAttribute("href"))
-      .scrollIntoView({ behavior: "smooth" });
+    document.querySelector(e.target.getAttribute("href")).scrollIntoView({ behavior: "smooth" });
   }
 });
 </script>
