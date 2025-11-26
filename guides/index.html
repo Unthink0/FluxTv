@@ -2,9 +2,11 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Guides</title>
+<title>Guides & Posts</title>
 <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/stg/css/navbar.css">
+  <link rel="stylesheet" href="/stg/css/footer.css">
 
 <!-- Markdown Parser -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -156,18 +158,119 @@ h1{
 </head>
 
 <body>
+   <!-- NAVBAR -->
+  <header class="navbar" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+     <div class="nav-left">
+  <a href="/#home">
+    <img src="https://delgadohome.site/web/assets/img/banner-light.png" alt="FluxTV logo">
+  </a>
+  <div class="nav-brand"></div>
+</div>
 
-<h1>FluxTV Guides / Posts</h1>
+      <!-- links (desktop + mobile) -->
+      <nav id="navLinks" class="nav-links" aria-label="Main links">
+        <a href="/#home">Home</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#about">About</a>
+        <a href="/channels">Channel Lineup</a>
+        <a href="">Guides</a>
+        <a href="/support">Support</a>
+        <a class="cta" roll="button" href="/free-trial" style="margin-left:12px">24-hr Free Trial</a>
+      </nav>
+
+      <!-- hamburger -->
+      <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+
+<h1>FluxTV Guides & Posts</h1>
 
 <div id="search-container">
-  <input id="search" type="text" placeholder="Search blog posts...">
+  <input id="search" type="text" placeholder="Search posts...">
 </div>
 
 <div class="category-bar" id="categoryBar"></div>
 <div id="featured"></div>
 <div id="blog" class="blog-container"></div>
 
+    <!------------>
+<!-- Footer -->
+<!------------>
+<footer class="flux-footer">
+  <div class="footer-inner">
+
+    <!-- LEFT COLUMN -->
+    <div class="footer-about">
+      <img src="https://delgadohome.site/web/assets/img/banner-light.png" class="footer-logo" alt="FluxTV Logo">
+
+      <h3>Best IPTV Service Subscription</h3>
+      <p>
+        FluxTV provides reliable IPTV service with 16,000+ live channels and 
+        40,000+ movies & TV shows. Available worldwide with ultra-fast streaming.
+      </p>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="/#home">Home</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/guides">Guides</a>
+      <a href="/channels">Channel Lineup</a>
+      <a href="/#about">About</a>
+    </div>
+
+    <!-- HELP CENTER -->
+    <div class="footer-col">
+      <h4>Help Center</h4>
+      <a href="/support">Support</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms & Conditions</a>
+      <a href="/dmca">DMCA Disclaimer</a>
+      <a href="/refund-policy">Refund Policy</a>
+    </div>
+
+    <!-- SECURE BADGE -->
+    <div class="footer-secure">
+      <img src="https://www.pngmart.com/files/7/Secure-HTTPS-PNG-HD.png" alt="Secure Icon" class="secure-icon">
+      <p>100% Secure Checkout</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    Copyright © <span id="year"></span> FluxTV. All rights reserved. | 100% Hand coded with Love ♡
+  </div>
+</footer>
+
 <script>
+ /* ---------- NAV TOGGLE ---------- */
+    
+    
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    function setAria(open){
+      hamburger.setAttribute('aria-expanded', String(open));
+    }
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      setAria(isOpen);
+    });
+
+    // close menu when a nav link is clicked (mobile)
+    navLinks.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A' && window.innerWidth <= 880){
+        navLinks.classList.remove('open');
+        setAria(false);
+      }
+    });
+  
 let allPosts = [];
 let activeCategory = "All";
 
