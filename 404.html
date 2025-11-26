@@ -16,20 +16,19 @@
         --muted:#9fb0c6;
         --glow:0 0 20px rgba(255,107,45,0.8),0 0 35px rgba(255,107,45,0.5);
     }
-    body {
-        margin:0;
-        height:100vh;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        text-align:center;
-        background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
-        font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
-        color:white;
-        padding:20px;
-    }
-
+body {
+    margin:0;
+    padding:20px;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+    color:white;
+    background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    text-align:center;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
     .wrapper {
+        margin:120px auto 60px auto; /* centers nicely between navbar + footer */
         max-width:480px;
         width:100%;
         padding:30px;
