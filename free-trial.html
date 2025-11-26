@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>24-Hour Free Trial</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<link rel="stylesheet" href="/stg/css/navbar.css">
+<link rel="stylesheet" href="/stg/css/footer.css">
+
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        background: #071226;
+        color: #ffffff;
+        line-height: 1.7;
+        overflow-x: hidden;
+    }
+
+    /* ---- SCROLL ANIMATION BASE ---- */
+    .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.9s ease;
+    }
+
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* HERO */
+    .hero {
+        padding: 120px 30px 100px;
+        text-align: center;
+        background: linear-gradient(180deg, #071226, #0a162d);
+    }
+
+    .hero h1 {
+        font-size: 60px;
+        color: #ff6b2d;
+        font-weight: 800;
+        margin-bottom: 15px;
+        text-shadow: 0 0 25px rgba(255,107,45,0.7);
+    }
+
+    .hero p {
+        font-size: 20px;
+        color: #c7d4e7;
+    }
+
+    /* Sections */
+    section {
+        padding: 70px 30px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .text {
+        flex: 1;
+        min-width: 320px;
+    }
+
+    .text h2 {
+        font-size: 36px;
+        color: #ff6b2d;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .text p, .text li {
+        color: #b5c3d9;
+        font-size: 18px;
+    }
+
+    .img-holder {
+        flex: 1;
+        min-width: 320px;
+        height: 260px;
+        background: #0e1d33;
+        border: 2px dashed #ff6b2d;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ff6b2d;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .features-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        margin-top: 30px;
+    }
+
+    .feature {
+        text-align: center;
+        width: 200px;
+    }
+
+    .feature img {
+        width: 70px;
+        margin-bottom: 10px;
+    }
+
+    /* CTA */
+    .cta {
+        text-align: center;
+        padding: 90px 20px;
+        background: linear-gradient(180deg, #0a162d, #071226);
+        margin-top: 40px;
+    }
+
+    .cta a {
+        background: #ff6b2d;
+        padding: 18px 45px;
+        color: #ffffff;
+        font-size: 22px;
+        border-radius: 50px;
+        font-weight: bold;
+        text-decoration: none;
+        box-shadow: 0 0 20px rgba(255,107,45,0.7);
+        transition: 0.3s;
+    }
+
+    .cta a:hover {
+        background: #ff8550;
+        box-shadow: 0 0 30px rgba(255,107,45,1);
+    }
+
+    /* FAQ */
+    .faq-container {
+        max-width: 900px;
+        margin: 40px auto;
+    }
+
+    .faq-item {
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        padding-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .faq-question {
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+        font-size: 22px;
+        color: #ff6b2d;
+        padding: 10px 0;
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: 0.3s;
+    }
+
+    .faq-question::after {
+        content: "▸";
+        font-size: 22px;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-question::after {
+        transform: rotate(90deg);
+    }
+
+    .faq-answer {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        font-size: 17px;
+        color: #b5c3d9;
+        transition: max-height 0.4s ease, opacity 0.35s ease;
+    }
+
+    .faq-item.active .faq-answer {
+        max-height: 300px;
+        opacity: 1;
+    }
+</style>
+
+</head>
+
+<body>
+
+ <!-- NAVBAR -->
+  <header class="navbar" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+     <div class="nav-left">
+  <a href="/#home">
+    <img src="https://delgadohome.site/web/assets/img/banner-light.png" alt="FluxTV logo">
+  </a>
+  <div class="nav-brand"></div>
+</div>
+
+      <!-- links (desktop + mobile) -->
+      <nav id="navLinks" class="nav-links" aria-label="Main links">
+        <a href="/#home">Home</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#about">About</a>
+        <a href="/channels">Channel Lineup</a>
+        <a href="/guides">Guides</a>
+        <a href="/support">Support</a>
+        <a class="cta" roll="button" href="/free-trial" style="margin-left:12px">24-hr Free Trial</a>
+      </nav>
+
+      <!-- hamburger -->
+      <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+  
+<!-- HERO -->
+<div class="hero reveal">
+    <h1>FluxTV 24-Hour Free Trial</h1>
+    <p>Try our premium IPTV completely free.<br>No credit card • Full access • 24-hours</p>
+</div>
+
+<!-- WHY TRY SECTION -->
+<section class="reveal">
+    <div class="row">
+        <div class="img-holder">
+            IMAGE PLACEHOLDER<br>(Add your "Main Trial" image here)
+        </div>
+
+        <div class="text">
+            <h2>Why Try the FluxTV Free Trial?</h2>
+            <p>Get 24 hours of full access to all channels, sports, movies, and international content.</p>
+
+            <div class="features-row">
+                <div class="feature">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3094/3094855.png">
+                    <p>18,000+ Channels</p>
+                </div>
+                <div class="feature">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3094/3094832.png">
+                    <p>Premium Sports + PPV</p>
+                </div>
+                <div class="feature">
+                    <img src="https://cdn-icons-png.flaticon.com/512/272/272534.png">
+                    <p>4K / UHD Quality</p>
+                </div>
+                <div class="feature">
+                    <img src="https://cdn-icons-png.flaticon.com/512/9131/9131525.png">
+                    <p>Movie Library</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS SECTION -->
+<section class="reveal">
+    <div class="row">
+
+        <div class="text">
+            <h2>How the Free Trial Works</h2>
+            <ol>
+                <li>Submit the request or contact us.</li>
+                <li>Receive your login.</li>
+                <li>Install any IPTV app you prefer.</li>
+                <li>Enter your FluxTV login details.</li>
+                <li>Enjoy 24 hours of premium access.</li>
+            </ol>
+        </div>
+
+        <div class="img-holder">
+            IMAGE PLACEHOLDER<br>(Add a "Setup / Login" image here)
+        </div>
+    </div>
+</section>
+
+<!-- WHY CHOOSE SECTION -->
+<section class="reveal">
+    <div class="row">
+
+        <div class="img-holder">
+            IMAGE PLACEHOLDER<br>(Add a "Support / 24-7" image here)
+        </div>
+
+        <div class="text">
+            <h2>Why Choose FluxTV?</h2>
+            <ul>
+                <li>99.9% uptime with no buffering</li>
+                <li>Worldwide entertainment & daily updates</li>
+                <li>Anti-freeze streaming technology</li>
+                <li>Works on all devices</li>
+                <li>Real 24/7 support at www.fluxtviptv.com/support</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- CTA ABOVE FAQ -->
+<div class="cta reveal">
+    <h2 style="margin-bottom:20px;">Start Your Free Trial Today</h2>
+    <p style="color:#c7d4e7; margin-bottom:30px;">Instant access • No payment • Full experience</p>
+
+    <a href="https://www.fluxtviptv.com">Get 24-Hour Free Trial</a>
+</div>
+
+<!-- FAQ SECTION -->
+<section class="reveal">
+    <h2 style="text-align:center; margin-bottom:40px;">FAQs About the FluxTV Free Trial</h2>
+
+    <div class="faq-container">
+
+        <div class="faq-item">
+            <button class="faq-question">What is an IPTV free trial?</button>
+            <div class="faq-answer">
+                <p>An IPTV free trial lets you test FluxTV for 24 hours at no cost. You can explore all channels, movies, sports, and features before subscribing.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">How do I access the FluxTV free trial?</button>
+            <div class="faq-answer">
+                <p>Just contact us on www.fluxtviptv.com/support or click the button and send us a request. We send your trial details — no payment required.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">What content is included during the trial?</button>
+            <div class="faq-answer">
+                <p>You get access to the full channel list, sports, PPV, movies, series, and all premium content — nothing is restricted.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">Are there any limitations?</button>
+            <div class="faq-answer">
+                <p>No. FluxTV gives you full access so you can experience everything exactly like a paid subscriber.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">What devices does FluxTV support?</button>
+            <div class="faq-answer">
+                <p>FluxTV works on Smart TVs, Firestick, Android phones, iOS, PC, VLC, Kodi, MAG, Enigma, Android Boxes, and more.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">Do I need a satellite or dish?</button>
+            <div class="faq-answer">
+                <p>No. FluxTV works 100% over your internet connection — no dish or satellite required.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+      <!------------>
+<!-- Footer -->
+<!------------>
+<footer class="flux-footer">
+  <div class="footer-inner">
+
+    <!-- LEFT COLUMN -->
+    <div class="footer-about">
+      <img src="https://delgadohome.site/web/assets/img/banner-light.png" class="footer-logo" alt="FluxTV Logo">
+
+      <h3>Best IPTV Service Subscription</h3>
+      <p>
+        FluxTV provides reliable IPTV service with 16,000+ live channels and 
+        40,000+ movies & TV shows. Available worldwide with ultra-fast streaming.
+      </p>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="/#home">Home</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/guides">Guides</a>
+      <a href="/channels">Channel Lineup</a>
+      <a href="/#about">About</a>
+    </div>
+
+    <!-- HELP CENTER -->
+    <div class="footer-col">
+      <h4>Help Center</h4>
+      <a href="/support">Support</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms & Conditions</a>
+      <a href="/dmca">DMCA Disclaimer</a>
+      <a href="/refund-policy">Refund Policy</a>
+    </div>
+
+    <!-- SECURE BADGE -->
+    <div class="footer-secure">
+      <img src="https://www.pngmart.com/files/7/Secure-HTTPS-PNG-HD.png" alt="Secure Icon" class="secure-icon">
+      <p>100% Secure Checkout</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    Copyright © <span id="year"></span> FluxTV. All rights reserved. | 100% Hand coded with Love ♡
+  </div>
+</footer>
+
+<script>
+      /* ---------- NAV TOGGLE ---------- */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    function setAria(open){
+      hamburger.setAttribute('aria-expanded', String(open));
+    }
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      setAria(isOpen);
+    });
+
+    // close menu when a nav link is clicked (mobile)
+    navLinks.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A' && window.innerWidth <= 880){
+        navLinks.classList.remove('open');
+        setAria(false);
+      }
+    });
+/* ---- SCROLL ANIMATIONS ---- */
+const reveals = document.querySelectorAll('.reveal');
+
+const revealOnScroll = () => {
+  for (let i = 0; i < reveals.length; i++) {
+    const windowHeight = window.innerHeight;
+    const revealTop = reveals[i].getBoundingClientRect().top;
+    const revealPoint = 150;
+
+    if (revealTop < windowHeight - revealPoint) {
+      reveals[i].classList.add('active');
+    }
+  }
+};
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
+
+/* ---- FAQ Accordion ---- */
+document.addEventListener("DOMContentLoaded", function () {
+    const items = document.querySelectorAll(".faq-item");
+    items.forEach(item => {
+        const question = item.querySelector(".faq-question");
+        question.addEventListener("click", () => {
+            item.classList.toggle("active");
+        });
+    });
+});
+</script>
+
+</body>
+</html>
