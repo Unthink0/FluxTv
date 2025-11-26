@@ -79,14 +79,155 @@ body {
     font-size: 26px;
   }
 }
+
+  .post-content img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  margin: 20px auto;
+}
+.post-content {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.post-content * {
+  max-width: 100%;
+}
+/* Auto-scale images */
+.post-content img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  display: block;
+  margin: 25px auto;
+  cursor: zoom-in;
+  transition: box-shadow .25s, transform .25s;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
+
+/* Hover effect */
+.post-content img:hover {
+  transform: scale(1.01);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+}
+
+/* Zoom modal overlay */
+#imgZoomModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+
+/* Large zoomed image */
+#imgZoomModal img {
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 12px;
+  box-shadow: 0 0 35px rgba(0,0,0,0.55);
+}
+  /* ------------------------------- */
+/*  SCROLL PROGRESS BAR           */
+/* ------------------------------- */
+#progressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: #ff6b2d;
+  width: 0%;
+  z-index: 9999;
+  box-shadow: 0 0 10px #ff6b2d;
+}
+
+/* ------------------------------- */
+/*  DYNAMIC TABLE OF CONTENTS     */
+/* ------------------------------- */
+#toc {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 35px;
+}
+
+#toc h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#toc ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+#toc li {
+  margin: 6px 0;
+}
+
+#toc a {
+  color: #ff6b2d;
+  text-decoration: none;
+}
+
+#toc a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------------------- */
+/*  FADE-IN ANIMATION             */
+/* ------------------------------- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeIn .6s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Delay staggering for nicer effect */
+.fade-in.delay-1 { animation-delay: .1s; }
+.fade-in.delay-2 { animation-delay: .2s; }
+.fade-in.delay-3 { animation-delay: .3s; }
+.fade-in.delay-4 { animation-delay: .4s; }
+
+/* Make sure images fade in too */
+.post-content img {
+  opacity: 0;
+  animation: fadeIn .7s ease forwards;
+  animation-delay: .2s;
+}
+
 </style>
 </head>
-
 <body>
-
+  
 <div class="back" onclick="history.back()">← Back to Guides</div>
 
-<div id="post" class="post-container">Loading…</div>
+  <div id="progressBar"></div>
+
+<div id="toc" class="fade-in delay-1">
+  <h3>Table of Contents</h3>
+  <ul id="tocList"></ul>
+</div>
+
+
+<div class="post-content fade-in delay-2" id="postContent"></div>
 
 <script>
 async function loadPost() {
@@ -123,7 +264,83 @@ if (!formattedContent || formattedContent.trim() === "") {
 }
 
 loadPost();
-</script>
 
+  // Click-to-zoom images inside post content
+document.addEventListener("click", function(e) {
+  if (e.target.matches(".post-content img")) {
+    const modal = document.getElementById("imgZoomModal");
+    const zoomImg = document.getElementById("zoomedImage");
+
+    zoomImg.src = e.target.src;
+    modal.style.display = "flex";
+  }
+});
+
+// Close modal on click
+document.getElementById("imgZoomModal").addEventListener("click", function() {
+  this.style.display = "none";
+});
+/* -----------------------------
+  SCROLL PROGRESS BAR
+----------------------------- */
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  document.getElementById("progressBar").style.width = progress + "%";
+});
+
+
+/* -----------------------------
+  DYNAMIC TABLE OF CONTENTS
+----------------------------- */
+function generateTOC() {
+  const content = document.querySelector(".post-content");
+  const tocList = document.getElementById("tocList");
+
+  if (!content || !tocList) return;
+
+  const headings = content.querySelectorAll("h1, h2, h3");
+
+  headings.forEach((h, i) => {
+    const id = "heading-" + i;
+    h.id = id;
+
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+
+    a.textContent = h.textContent;
+    a.href = "#" + id;
+
+    li.appendChild(a);
+    tocList.appendChild(li);
+  });
+}
+
+// Smooth scroll for TOC links
+document.addEventListener("click", (e) => {
+  if (e.target.matches("#toc a")) {
+    e.preventDefault();
+    const id = e.target.getAttribute("href");
+    document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+  }
+});
+
+
+/* -----------------------------
+  APPLY FADE-IN CLASS
+----------------------------- */
+window.addEventListener("load", () => {
+  generateTOC();
+
+  document.querySelectorAll(".fade-in").forEach((el) => {
+    el.classList.add("animate");
+  });
+});
+
+</script>
+<div id="imgZoomModal">
+  <img id="zoomedImage" src="">
+</div>
 </body>
 </html>
