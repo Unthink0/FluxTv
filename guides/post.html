@@ -105,7 +105,11 @@ async function loadPost() {
     }
 
     // Convert markdown → HTML safely
-    const formattedContent = marked.parse(post.content || "");
+    let formattedContent = marked.parse(post.content || "");
+if (!formattedContent || formattedContent.trim() === "") {
+    formattedContent = "<p>No content available.</p>";
+}
+
 
     box.innerHTML = `
       <div class="post-title">${post.title}</div>
