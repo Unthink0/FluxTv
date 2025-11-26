@@ -228,7 +228,9 @@ body {
 
 
 <div class="post-content fade-in delay-2" id="postContent"></div>
-
+<div id="imgZoomModal">
+  <img id="zoomedImage" src="">
+</div>
 <script>
 async function loadPost() {
   const params = new URLSearchParams(window.location.search);
@@ -340,8 +342,5 @@ window.addEventListener("load", () => {
 });
 
 </script>
-<div id="imgZoomModal">
-  <img id="zoomedImage" src="">
-</div>
 </body>
 </html>
