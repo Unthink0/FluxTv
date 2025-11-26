@@ -215,7 +215,10 @@ function buildFeatured(){
   const sorted = [...allPosts].sort((a,b)=>new Date(b.date) - new Date(a.date));
   const p = sorted[0];
 
-  const preview = stripHTML(marked.parse(p.content)).substring(0,180) + "...";
+  let html = marked.parse(post.content || "");
+if (!html || html.trim() === "") html = post.content || "";
+const preview = stripHTML(html).substring(0,150) + "...";
+
 
   box.innerHTML = `
     <div class="featured">
