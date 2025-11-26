@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FluxTV – Support</title>
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" href="/stg/css/navbar.css">
+
+<style>
+:root {
+  --bg-1:#071226;
+  --bg-2:#041022;
+  --card:#0d1b2b;
+  --accent:#ff6b2d;
+  --muted:#9fb0c6;
+  --glow:0 0 20px rgba(255,107,45,0.8), 0 0 35px rgba(255,107,45,0.6);
+  --glowwa:0 0 20px #25D366, 0 0 35px #fff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: white;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+}
+
+/* Page wrapper */
+.page-wrap {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+/* Logo + Title */
+.support-header {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.support-header img {
+  width: 160px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 12px rgba(255,255,255,0.15));
+}
+
+.support-header h1 {
+  font-size: 44px;
+  margin: 0;
+  font-weight: 800;
+}
+
+.support-header p {
+  color: var(--muted);
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+/* WhatsApp CTA */
+.whatsapp-box {
+  text-align: center;
+  margin-top: 35px;
+  margin-bottom: 30px;
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  background: #25D366;
+  color: white;
+  padding: 16px 40px;
+  border-radius: 14px;
+  font-size: 20px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  transition: .25s;
+}
+
+.whatsapp-btn:hover {
+  background: #1bb955;
+  transform: scale(1.05);
+}
+
+.scroll-hint {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.scroll-wa {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 14px;
+  text-shadow: var(--glowwa);
+}
+
+/* Form */
+.form-card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 32px;
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+  margin-top: 55px;
+}
+
+.form-card h2 {
+  font-size: 30px;
+  margin: 0 0 25px 0;
+  text-align: center;
+  font-weight: 800;
+}
+
+/* FIX FORM OFF-CENTER ALIGNMENT */
+.form-card {
+  box-sizing: border-box;
+}
+
+.form-card * {
+  box-sizing: border-box !important;
+}
+
+form {
+  width: 100%;
+}
+
+form input,
+form textarea,
+form button {
+  width: 100%;
+  max-width: 100%;
+}
+
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  color: white;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+form textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+form button {
+  width: 100%;
+  background: var(--accent);
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--glow);
+  transition: .25s;
+}
+
+form button:hover {
+  transform: scale(1.04);
+}
+
+.scroll-hintmsg {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 14px;
+
+}
+/* Footer spacer */
+.footer-space {
+  height: 40px;
+}
+
+/* ---------------------------------------------------
+   RESPONSIVE OPTIMIZATION FOR ALL DEVICES
+--------------------------------------------------- */
+
+/* Large phones + small tablets (portrait) */
+@media(max-width: 768px) {
+
+  .page-wrap {
+    padding-top: 50px;
+    padding-bottom: 60px;
+    width: 92%;
+  }
+
+  .support-header img {
+    width: 130px;
+  }
+
+  .support-header h1 {
+    font-size: 32px;
+  }
+
+  .support-header p {
+    font-size: 16px;
+    max-width: 90%;
+    margin: 10px auto;
+  }
+
+  .whatsapp-btn {
+    padding: 14px 28px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+
+  .form-card {
+    padding: 22px;
+  }
+
+  .form-card h2 {
+    font-size: 24px;
+  }
+
+  form input,
+  form textarea {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  form button {
+    font-size: 18px;
+    padding: 14px;
+  }
+}
+
+/* Extra small devices — older phones & very narrow screens */
+@media(max-width: 480px) {
+
+  .support-header img {
+    width: 115px;
+  }
+
+  .support-header h1 {
+    font-size: 26px;
+  }
+
+  .support-header p {
+    font-size: 15px;
+  }
+
+  .whatsapp-btn {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 17px;
+  }
+
+  .form-card {
+    padding: 18px;
+  }
+
+  form input,
+  form textarea {
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  form button {
+    font-size: 17px;
+  }
+}
+
+</style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+     <div class="nav-left">
+  <a href="#home">
+    <img src="https://delgadohome.site/web/assets/img/banner-light.png" alt="FluxTV logo">
+  </a>
+  <div class="nav-brand"></div>
+</div>
+
+      <!-- links (desktop + mobile) -->
+      <nav id="navLinks" class="nav-links" aria-label="Main links">
+        <a href="/#home">Home</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#about">About</a>
+        <a href="channels">Channel Lineup</a>
+        <a href="guides">Guides</a>
+        <a href="">Support</a>
+        <a class="cta" roll="button" href="free-trial" style="margin-left:12px">24-hr Free Trial</a>
+      </nav>
+
+      <!-- hamburger -->
+      <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+<div class="page-wrap">
+
+  <div class="support-header">
+    <img src="/images/favicon.png" alt="FluxTV Logo">
+    <h1>FluxTV Support</h1>
+    <p>We're here 24/7 to help you get set up, fix issues, or answer questions.</p>
+  </div>
+
+  <!-- WhatsApp Contact -->
+  <div class="whatsapp-box">
+    <a href="https://wa.me/YOURNUMBER" target="_blank" class="whatsapp-btn">
+      💬 Contact Us on WhatsApp
+    </a>
+    <div class="scroll-wa">WhatsApp is the fast Support Method</div>
+  </div>
+
+  <div class="support-header"><p>Or scroll down to send a message ↓</p></div>
+
+  <!-- Support Form -->
+  <div class="form-card">
+    <h2>Send Us a Message</h2>
+
+    <form action="https://formsubmit.co/client.fluxtv+form@gmail.com" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+
+      <input type="email" name="email" placeholder="Your Email" required>
+
+      <textarea name="message" placeholder="How can we help you?" required></textarea>
+
+      <button type="submit">Submit Support Request</button>
+    </form>
+    
+  </div>
+  
+  <div class="footer-space"></div>
+  
+<div class="scroll-hintmsg">Please allow up to 24 hours for us to respond via email.</div>
+  <div class="footer-space"></div>
+
+</div>
+
+  <script>
+    /* ---------- NAV TOGGLE ---------- */
+    
+    
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    function setAria(open){
+      hamburger.setAttribute('aria-expanded', String(open));
+    }
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      setAria(isOpen);
+    });
+
+    // close menu when a nav link is clicked (mobile)
+    navLinks.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A' && window.innerWidth <= 880){
+        navLinks.classList.remove('open');
+        setAria(false);
+      }
+    });
+  </script>
+</body>
+</html>
