@@ -233,7 +233,8 @@ body {
 async function loadPost() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
-  const box = document.getElementById("post");
+  const box = document.getElementById("postContent");
+
 
   try {
     const res = await fetch("/guides/posts.json");
@@ -252,12 +253,12 @@ if (!formattedContent || formattedContent.trim() === "") {
 }
 
 
-    box.innerHTML = `
-      <div class="post-title">${post.title}</div>
-      <div class="post-date">${new Date(post.date).toLocaleDateString()}</div>
-      ${post.image ? `<img src="${post.image}" class="post-image">` : ""}
-      <div class="post-content">${formattedContent}</div>
-    `;
+  box.innerHTML = `
+  <div class="post-title fade-in delay-1">${post.title}</div>
+  <div class="post-date fade-in delay-1">${new Date(post.date).toLocaleDateString()}</div>
+  ${post.image ? `<img src="${post.image}" class="post-image fade-in delay-1">` : ""}
+  ${formattedContent}
+`;
   } catch(err) {
     box.innerHTML = "Error loading post.";
   }
