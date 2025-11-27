@@ -504,6 +504,25 @@
 .guide-btn:hover {
   transform: scale(1.07);
 }
+    .guide-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.guide-category {
+  background: rgba(255,255,255,0.06);
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
   </style>
 </head>
 <body>
@@ -1088,16 +1107,24 @@ async function loadLatestGuides() {
         .replace(/[#>*\-`]/g, "")
         .substring(0, 120) + "...";
 
-      card.innerHTML = `
-        ${p.image ? `<img src="${p.image}" class="guide-image" alt="${p.title}">` : ""}
-        
-        <div class="guide-body">
-          <h3>${p.title}</h3>
-          <div class="guide-date">${new Date(p.date).toLocaleDateString()}</div>
-          <p class="guide-excerpt">${excerpt}</p>
-          <a class="guide-btn" href="/guides/post.html?id=${p.id}">Read Guide →</a>
-        </div>
-      `;
+card.innerHTML = `
+  <div class="guide-title">${p.title}</div>
+
+  ${p.image ? `<img src="${p.image}" class="guide-image" alt="${p.title}">` : ""}
+
+  <div class="guide-body">
+
+    <div class="guide-meta">
+      <span class="guide-date">${new Date(p.date).toLocaleDateString()}</span>
+      <span>•</span>
+      <span class="guide-category">${p.category}</span>
+    </div>
+
+    <p class="guide-excerpt">${excerpt}</p>
+
+    <a class="guide-btn" href="/guides/post.html?id=${p.id}">Read Guide →</a>
+  </div>
+`;
 
       grid.appendChild(card);
     });
