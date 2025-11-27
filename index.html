@@ -413,7 +413,74 @@
   transform: translateY(-3px);
   box-shadow: 0 0 25px rgba(255,107,45,0.75);
 }
+/* ---------- LATEST GUIDES SECTION ---------- */
+.guides-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  width: 92%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
+@media(min-width: 850px) {
+  .guides-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.guide-card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.45);
+  text-align: left;
+  transition: .25s;
+  display: flex;
+  flex-direction: column;
+}
+
+.guide-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 25px rgba(255,107,45,0.45);
+}
+
+.guide-card h3 {
+  font-size: 20px;
+  margin: 0 0 10px;
+  color: white;
+}
+
+.guide-date {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.guide-excerpt {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+  flex-grow: 1;
+  margin-bottom: 18px;
+}
+
+.guide-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: .25s;
+  text-align: center;
+}
+
+.guide-btn:hover {
+  transform: scale(1.07);
+}
   </style>
 </head>
 <body>
@@ -689,6 +756,17 @@
 
 </section>
 
+    <!-- LATEST GUIDES SECTION -->
+<section id="latest-guides" style="padding:80px 0; text-align:center;">
+  <h2 style="font-size:34px; margin-bottom:25px;">Latest Guides</h2>
+  <p style="color:var(--muted); max-width:700px; margin:0 auto 40px;">
+    Step-by-step tutorials or News from FLuxTV.
+  </p>
+
+  <div id="guidesGrid" class="guides-grid"></div>
+</section>
+
+
 
     
 </main>
@@ -963,6 +1041,48 @@ document.addEventListener("mouseout", e => {
 });
 
 loadReviews();
+/* -------------------------------
+   LOAD LATEST GUIDES (top 3)
+-------------------------------- */
+async function loadLatestGuides() {
+  try {
+    const res = await fetch("/guides/posts.json");
+    const posts = await res.json();
+
+    // sort newest → oldest
+    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // take first 3
+    const latest = posts.slice(0, 3);
+
+    const grid = document.getElementById("guidesGrid");
+
+    latest.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "guide-card";
+
+      const excerpt = (p.content || "")
+        .replace(/[#>*\-`]/g, "")
+        .substring(0, 120) + "...";
+
+      card.innerHTML = `
+        <h3>${p.title}</h3>
+        <div class="guide-date">${new Date(p.date).toLocaleDateString()}</div>
+        <p class="guide-excerpt">${excerpt}</p>
+        <a class="guide-btn" href="/guides/post.html?id=${p.id}">
+          Read Guide →
+        </a>
+      `;
+
+      grid.appendChild(card);
+    });
+
+  } catch (err) {
+    console.error("Latest guides failed:", err);
+  }
+}
+
+loadLatestGuides();
 
   </script>
 </body>
