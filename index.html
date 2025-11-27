@@ -413,100 +413,48 @@
   transform: translateY(-3px);
   box-shadow: 0 0 25px rgba(255,107,45,0.75);
 }
-/* ---------- LATEST GUIDES SECTION ---------- */
-.guides-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 25px;
-  width: 92%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-@media(min-width: 850px) {
-  .guides-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
+/* -------------------------------------------------
+   GUIDE CARD — CONTAINER
+------------------------------------------------- */
 .guide-card {
   background: var(--card);
-  padding: 0;
+  padding: 20px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 6px 22px rgba(0,0,0,0.45);
-  overflow: hidden;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.45);
+  cursor: pointer;
   transition: .25s;
-  display: flex;
-  flex-direction: column;
 }
 
 .guide-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 0 25px rgba(255,107,45,0.45);
 }
 
-/* Image */
-.guide-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-@media(min-width: 850px) {
-  .guide-image {
-    height: 170px;
-  }
-}
-
-.guide-body {
-  padding: 20px;
-}
-
-/* Title */
+/* -------------------------------------------------
+   TITLE
+------------------------------------------------- */
 .guide-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  padding: 20px 20px 10px 20px;
-  color: white;
-  text-align: left;
-}
-
-/* Date */
-.guide-date {
-  color: var(--muted);
-  font-size: 14px;
+  color: var(--accent);
   margin-bottom: 12px;
 }
 
-/* Excerpt */
-.guide-excerpt {
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.45;
-  flex-grow: 1;
-  margin-bottom: 18px;
+/* -------------------------------------------------
+   IMAGE
+------------------------------------------------- */
+.guide-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 14px 0 18px 0;
+  display: block;
 }
 
-/* Button */
-.guide-btn {
-  display: inline-block;
-  padding: 10px 18px;
-  background: var(--accent);
-  color: white;
-  font-weight: 700;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: .25s;
-  text-align: center;
-}
-
-.guide-btn:hover {
-  transform: scale(1.07);
-}
-    .guide-meta {
+/* -------------------------------------------------
+   META: DATE + CATEGORY
+------------------------------------------------- */
+.guide-meta {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -525,6 +473,46 @@
   border: 1px solid rgba(255,255,255,0.08);
 }
 
+/* -------------------------------------------------
+   EXCERPT
+------------------------------------------------- */
+.guide-excerpt {
+  font-size: 16px;
+  color: #dfe7f0;
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+
+/* -------------------------------------------------
+   BUTTON
+------------------------------------------------- */
+.guide-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: .25s;
+}
+
+.guide-btn:hover {
+  transform: scale(1.05);
+}
+
+/* -------------------------------------------------
+   MOBILE TWEAKS
+------------------------------------------------- */
+@media (max-width: 650px) {
+  .guide-card {
+    padding: 18px;
+  }
+
+  .guide-title {
+    font-size: 20px;
+  }
+}
   </style>
 </head>
 <body>
