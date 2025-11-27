@@ -1,198 +1,350 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>24-Hour Free Trial</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Free Trial</title>
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-<link rel="stylesheet" href="/stg/css/navbar.css">
-<link rel="stylesheet" href="/stg/css/footer.css">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="apple-touch-icon" href="/images/favicon.png">
+  <link rel="stylesheet" href="/stg/css/navbar.css">
+  <link rel="stylesheet" href="/stg/css/footer.css">
 
 
-<style>
-    body {
-        margin: 0;
-        font-family: 'Inter', sans-serif;
-        background: #071226;
-        color: #ffffff;
-        line-height: 1.7;
-        overflow-x: hidden;
+  <style>
+    :root{
+      --bg-1:#071226; --bg-2:#041022; --card:#0d1b2b;
+      --accent:#ff6b2d; --muted:#9fb0c6;
+      --glow:0 0 20px rgba(255,107,45,0.8),0 0 35px rgba(255,107,45,0.6);
     }
-  .free-trial-btn {
-    background: #ff6b2d !important;
-    padding: 10px 18px !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    color: #ffffff !important;
-    transition: .3s !important;
+   /* hero + other content (trimmed styles) */
+    .hero{min-height:72vh;display:flex;align-items:center;justify-content:center;padding:48px 0;position:relative}
+    .hero-inner{display:grid;grid-template-columns:1fr;gap:28px;width:100%}
+    @media(min-width:900px){.hero-inner{grid-template-columns:1fr 460px;gap:48px}}
+    .hero-left{text-align:left}
+    .logo{width:140px;margin-bottom:20px}
+    .eyebrow{background:rgba(255,255,255,0.04);color:var(--muted);padding:6px 10px;border-radius:999px;margin-bottom:12px;display:inline-block}
+    h1{margin:0 0 12px;font-size:28px}
+    @media(min-width:900px){h1{font-size:40px}}
+    p.lead{margin:0 0 20px;color:var(--muted);max-width:60ch}
+
+    /* FEATURES */
+    .features{
+      padding:48px 0;
+    }
+    .features-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+    @media(min-width:800px){
+      .features-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    .feature{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+      padding:18px;
+      border-radius:12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      min-height:120px;
+    }
+    .feature h3{margin:0 0 8px 0;font-size:16px}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
+    /* pricing + plans */
+    #pricing-desc{margin-bottom:25px;color:var(--muted)}
+    .device-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px}
+    .device-btn{padding:10px 18px;border-radius:10px;background:rgba(255,255,255,0.04);color:var(--muted);cursor:pointer;font-weight:600;border:1px solid transparent;transition:.18s}
+    .device-btn.active{background:var(--accent);color:#fff;transform:scale(1.06)}
+    .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+    .plan{background:var(--card);padding:22px;border-radius:16px;border:1px solid rgba(255,255,255,0.06)}
+    .plan h3{font-size:22px;margin:0 0 10px}
+    .price{font-size:36px;font-weight:800;color:var(--accent);margin-bottom:12px}
+    .plan p{color:var(--muted);font-size:15px;line-height:1.5}
+    
+    .payment-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  margin-top: 22px;
+  opacity: .9;
 }
 
-.free-trial-btn:hover {
-    background: #ff8550 !important;
-    box-shadow: 0 0 15px rgba(255,107,45,0.8) !important;
+.payment-row div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
 }
 
-
-    /* ---- SCROLL ANIMATION BASE ---- */
-    .reveal {
-        opacity: 0;
-        transform: translateY(40px);
-        transition: all 0.9s ease;
-    }
-
-    .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    /* HERO */
-    .hero {
-        padding: 120px 30px 100px;
-        text-align: center;
-        background: linear-gradient(180deg, #071226, #0a162d);
-    }
-
-    .hero h1 {
-        font-size: 60px;
-        color: #ff6b2d;
-        font-weight: 800;
-        margin-bottom: 15px;
-        text-shadow: 0 0 25px rgba(255,107,45,0.7);
-    }
-
-    .hero p {
-        font-size: 20px;
-        color: #c7d4e7;
-    }
-
-    /* Sections */
-    section {
-        padding: 70px 30px;
-        max-width: 1200px;
-        margin: auto;
-    }
-
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 40px;
-    }
-
-    .text {
-        flex: 1;
-        min-width: 320px;
-    }
-
-    .text h2 {
-        font-size: 36px;
-        color: #ff6b2d;
-        margin-bottom: 15px;
-        font-weight: 700;
-    }
-
-    .text p, .text li {
-        color: #b5c3d9;
-        font-size: 18px;
-    }
-
-    .img-holder {
-    flex: 1;
-    min-width: 320px;
-    height: 260px;
-    background: #0e1d33;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ff6b2d;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    padding: 0;
+.payment-row svg {
+  height: 20px;
+  width: 20px;
 }
 
 
-    .features-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 40px;
-        margin-top: 30px;
-    }
+    /* scroller */
+    .scroller{width:100%;overflow:hidden;padding:10px 0}
+    .scroller-track{display:flex;gap:28px;align-items:center;will-change:transform}
+    .scroller img{height:56px;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(255,255,255,0.12))}
 
-    .feature {
-        text-align: center;
-        width: 200px;
-    }
+    /* channel list section */
+    .channel-list-section{padding:90px 0;text-align:center;background:radial-gradient(circle at center, rgba(255,255,255,0.02), rgba(0,0,0,0.25))}
+    .cls-title{font-size:36px;margin-bottom:18px}
+    .cls-subtitle{color:var(--muted);max-width:720px;margin:0 auto 30px auto}
+    .cls-button{background:#0077ff;color:#fff;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:700}
 
-    .feature img {
-        width: 70px;
-        margin-bottom: 10px;
-    }
+    /* small helpers */
+    .center{text-align:center}
+    
+     /* Pricing */
+        #pricing-desc {
+            margin-bottom: 25px;
+            font-size: 15px;
+            color: var(--muted);
+        }
+        
+        #pricing-pay {
+             font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+        }
 
-    /* FAQ */
-    .faq-container {
-        max-width: 900px;
-        margin: 40px auto;
-    }
+        .device-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
 
-    .faq-item {
-        margin-bottom: 20px;
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        padding-bottom: 10px;
-        overflow: hidden;
-    }
+        .device-btn {
+            padding: 10px 18px;
+            font-size: 16px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--muted);
+            cursor: pointer;
+            font-weight: 800;
+            border: 1px solid transparent;
+            transition: .25s;
+        }
 
-    .faq-question {
-        width: 100%;
-        background: none;
-        border: none;
-        text-align: left;
-        font-size: 22px;
-        color: #ff6b2d;
-        padding: 10px 0;
-        cursor: pointer;
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: 0.3s;
-    }
+        .device-btn:hover {
+            transform: scale(1.05);
+        }
 
-    .faq-question::after {
-        content: "▸";
-        font-size: 22px;
-        transition: transform 0.3s ease;
-    }
+        .device-btn.active {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.08);
+        }
 
-    .faq-item.active .faq-question::after {
-        transform: rotate(90deg);
-    }
+        .plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
 
-    .faq-answer {
-        max-height: 0;
-        opacity: 0;
-        overflow: hidden;
-        font-size: 17px;
-        color: #b5c3d9;
-        transition: max-height 0.4s ease, opacity 0.35s ease;
-    }
+        .plan {
+            background: var(--card);
+            padding: 22px;
+            border-radius: 16px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: .25s;
+        }
 
-    .faq-item.active .faq-answer {
-        max-height: 300px;
-        opacity: 1;
-    }
-</style>
+        .plan:hover {
+            transform: translateY(-6px);
+        }
 
+        .plan h3 {
+            margin: 0 0 10px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .price {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .popular {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: var(--accent);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        .plan.popular-glow {
+            box-shadow: var(--glow);
+        }
+
+        .plan a {
+            display: block;
+            margin-top: 15px;
+            padding: 10px;
+            background: var(--accent);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: .25s;
+        }
+
+        .plan a:hover {
+            transform: scale(1.05);
+        }
+
+        .plan p {
+            font-size: 16px;
+            line-height: 1.45;
+        }
+    
+    /* Why Choose Us Section*/
+        .why-server {
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.25));
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 45px;
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .why-item {
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.45);
+            transition: 0.25s;
+        }
+
+        .why-item:hover {
+            transform: translateY(-6px);
+        }
+
+        .why-icon {
+            width: 64px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.25));
+        }
+
+        .why-item h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .why-item p {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.45;
+        }
+    /*Review Section*/
+.reviews-section {
+  padding: 70px 0;
+  text-align: center;
+  background: radial-gradient(circle at center,
+              rgba(255,255,255,0.02),
+              rgba(0,0,0,0.25));
+}
+
+.reviews-title {
+  font-size: 34px;
+  margin-bottom: 35px;
+  color: white;
+}
+
+.reviews-scroller {
+  overflow: hidden;
+  width: 100%;
+}
+
+.reviews-inner {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  position: relative;
+}
+
+.reviews-track {
+  display: flex;
+  gap: 22px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+    
+.review-card {
+  min-width: 260px;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.45);
+  flex-shrink: 0;
+  text-align: left;
+  transition: 0.2s;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+}
+
+.reviewer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.flag-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  object-fit: cover;
+}
+
+.flag {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.stars {
+  color: #ffbf00;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.review-card p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+  </style>
 </head>
-
 <body>
-
- <!-- NAVBAR -->
+  <!-- NAVBAR -->
   <header class="navbar" role="navigation" aria-label="Primary">
     <div class="nav-inner">
      <div class="nav-left">
-  <a href="/#home">
+  <a href="#home">
     <img src="https://delgadohome.site/web/assets/img/banner-light.png" alt="FluxTV logo">
   </a>
   <div class="nav-brand"></div>
@@ -200,9 +352,9 @@
 
       <!-- links (desktop + mobile) -->
       <nav id="navLinks" class="nav-links" aria-label="Main links">
-        <a href="/#home">Home</a>
-        <a href="/#pricing">Pricing</a>
-        <a href="/#about">About</a>
+        <a href="#home">Home</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#about">About</a>
         <a href="/channels">Channel Lineup</a>
         <a href="/guides">Guides</a>
         <a href="/support">Support</a>
@@ -215,147 +367,126 @@
       </button>
     </div>
   </header>
-  
-<!-- HERO -->
-<div class="hero reveal">
-    <h1>FluxTV 24-Hour Free Trial</h1>
-    <p>Try our premium IPTV completely free.<br>No credit card • Full access • 24-hours</p>
+
+  <!-- HERO -->
+  <main id="home">
+    <section class="hero container">
+      <div class="hero-inner">
+        <div class="hero-left">
+    
+          <div class="eyebrow">Live TV • Movies • Shows</div>
+          <h1>Free Trial</h1>
+          <p class="lead">Watch live channels, on-demand movies and personal media — all in one app. No clutter, fast playback, and the devices you already own.</p>
+          <div style="margin-top:18px;color:var(--muted);font-size:13px">Secure payments • 24/7 support • High Quality Video Streaming</div>
+        </div>
+        <div class="mockup" aria-hidden="true">
+          <img src="https://t3.ftcdn.net/jpg/04/35/60/66/360_F_435606616_TSGTXV5cm4hWDOJEIUttsxAaBKSv3BnM.jpg" alt="App preview" style="width:100%;border-radius:12px">
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+   <main class="container">
+    <!-- FEATURES -->
+    <section class="features" aria-labelledby="features-title">
+      <h2 id="features-title" class="center" style="margin-bottom:22px">Features</h2>
+      <div class="features-grid">
+        <div class="feature">
+          <h3>Live TV</h3>
+          <p>Thousands of HD UHD Channels with EPG</p>
+        </div>
+        <div class="feature">
+          <h3>On-demand VOD</h3>
+          <p>Thousands of HD UHD 4K VOD</p>
+        </div>
+        <div class="feature">
+          <h3>Many Countries</h3>
+          <p>We offer thousands of IPTV channels covering most countries around the world.</p>
+        </div>
+      </div>
+    </section>
+   </main>
+
+    <!-- PRICING -->
+    <section id="pricing" class="container" style="padding:28px 0 60px">
+      <h2 class="center">Free Trial</h2>
+      <p id="pricing-desc" class="center">This is the FluxTV Free Trial. This includes unlimited streaming, full HD access, and 24/7 support.</p>
+
+      <div class="device-select" id="deviceSelect" style="justify-content:center">
+        <!-- buttons inserted by JS -->
+      </div>
+
+      <div class="plans" id="plans" style="margin-top:18px">
+        <!-- plan cards inserted by JS -->
+      </div>
+      <p id="pricing-desc" class="center">You will be redirected to buy.stripe.com to complete payment.</p>
+      <p id="pricing-pay" class="center">Supported Payment Methods:</p>
+      <div class="payment-row">
+  <!-- Card -->
+  <div>
+    <svg height="20" width="20" viewBox="0 0 32 32" fill="none">
+      <path fill="#D8DEE4" d="M0 0h32v32H0z"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M6 10.375C6 9.339 6.84 8.5 7.875 8.5h16.25C25.16 8.5 26 9.34 26 10.375v11.25c0 1.035-.84 1.875-1.875 1.875H7.875A1.875 1.875 0 0 1 6 21.625v-11.25Zm1.875 0h16.25v1.875H7.875v-1.875Zm16.25 3.75v7.5H7.875v-7.5h16.25Z" fill="#474E5A"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M14.75 18.813c0-.518.42-.938.938-.938h5.624a.937.937 0 1 1 0 1.875h-5.625a.937.937 0 0 1-.937-.938Z" fill="#474E5A"></path>
+    </svg>
+    Card
+  </div>
+
+  <!-- Apple Pay -->
+  <div>
+    <svg height="20" width="20" viewBox="0 0 32 32" fill="none">
+      <path fill="#000" d="M0 0h32v32H0z"></path>
+      <path d="M19.308 7.63c-.8.95-2.082 1.698-3.367 1.592-.16-1.285.469-2.65 1.204-3.497.8-.975 2.204-1.672 3.341-1.725.132 1.338-.387 2.653-1.178 3.63Zm1.166 1.847c-1.86-.106-3.448 1.057-4.333 1.057-.894 0-2.244-1.003-3.714-.976-1.91.026-3.686 1.11-4.661 2.838-2.004 3.456-.522 8.57 1.416 11.383.947 1.393 2.082 2.921 3.58 2.865 1.418-.05 1.976-.922 3.689-.922 1.722 0 2.216.922 3.714.897 1.55-.025 2.526-1.393 3.473-2.787 1.082-1.578 1.523-3.119 1.55-3.2-.025-.025-2.991-1.165-3.02-4.593-.025-2.865 2.339-4.23 2.445-4.312-1.335-1.981-3.417-2.196-4.14-2.25Z" fill="#fff"></path>
+    </svg>
+    Apple Pay
+  </div>
+
+  <!-- Google Pay -->
+  <div>
+    <svg height="20" width="20" viewBox="0 0 32 32" fill="none">
+      <path fill="#F5F6F8" d="M0 0h32v32H0z"></path>
+      <path fill="#3C4043" d="M15.135 16.453v3.008h-.954v-7.428h2.53c.641 0 1.188.214 1.636.642.457.427.686.95.686 1.566 0 .63-.229 1.153-.686 1.575-.443.423-.99.632-1.636.632h-1.576v.005Zm0-3.505v2.59h1.596c.378 0 .696-.13.944-.383.254-.253.383-.561.383-.91a1.24 1.24 0 0 0-.383-.9 1.238 1.238 0 0 0-.944-.392h-1.596v-.005Zm6.393 1.262c.706 0 1.263.19 1.67.567.408.378.612.895.612 1.551v3.133h-.91v-.706h-.04c-.392.581-.92.87-1.575.87-.562 0-1.03-.165-1.407-.498a1.587 1.587 0 0 1-.567-1.242c0-.527.199-.945.597-1.253.397-.313.93-.468 1.59-.468.567 0 1.034.105 1.397.314v-.22c0-.332-.129-.61-.392-.844a1.347 1.347 0 0 0-.925-.348c-.532 0-.954.223-1.263.676l-.84-.527c.462-.671 1.148-1.004 2.053-1.004Zm-1.233 3.69c0 .248.105.457.318.62.21.165.458.25.741.25.403 0 .76-.15 1.074-.448.313-.298.472-.646.472-1.049-.298-.234-.71-.353-1.242-.353-.388 0-.711.095-.97.278-.263.194-.393.428-.393.701ZM29 14.375l-3.182 7.318h-.984l1.183-2.56-2.098-4.758h1.039l1.511 3.649h.02l1.472-3.65H29Z"></path>
+      <path fill="#4285F4" d="M11.339 15.846a5 5 0 0 0-.08-.895h-4v1.64l2.304.001a1.974 1.974 0 0 1-.856 1.321v1.065h1.372c.8-.742 1.26-1.837 1.26-3.132Z"></path>
+      <path fill="#34A853" d="M8.707 17.913c-.381.258-.873.409-1.448.409-1.111 0-2.054-.75-2.392-1.758H3.453v1.097a4.26 4.26 0 0 0 3.806 2.346c1.15 0 2.117-.379 2.82-1.03l-1.372-1.064Z"></path>
+      <path fill="#FABB05" d="M4.735 15.75c0-.284.047-.558.133-.816v-1.097H3.453A4.236 4.236 0 0 0 3 15.749c0 .688.164 1.338.453 1.913l1.415-1.098a2.568 2.568 0 0 1-.133-.815Z"></path>
+      <path fill="#E94235" d="M7.258 13.177c.628 0 1.19.216 1.634.639l1.216-1.215a4.091 4.091 0 0 0-2.85-1.11 4.26 4.26 0 0 0-3.806 2.346l1.415 1.098c.338-1.01 1.28-1.758 2.391-1.758Z"></path>
+    </svg>
+    Google Pay
+  </div>
+
+  <!-- Link -->
+  <div>
+    <svg height="20" width="20" viewBox="0 0 32 32" fill="none">
+      <path fill="#00D66F" d="M0 0h32v32H0z"></path>
+      <path fill="#011E0F" d="M15.144 6H10c1 4.18 3.923 7.753 7.58 10C13.917 18.246 11 21.82 10 26h5.144c1.275-3.867 4.805-7.227 9.142-7.914v-4.18c-4.344-.68-7.874-4.04-9.142-7.906Z"></path>
+    </svg>
+    Link
+  </div>
+
+  <!-- Cash App -->
+  <div>
+    <svg height="20" width="20" viewBox="0 0 32 32" fill="none">
+      <path fill="#00D64F" d="M0 0h32v32H0z"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M16.892 10.264c1.782 0 3.49.693 4.607 1.643.282.24.705.24.97-.018l1.328-1.293a.646.646 0 0 0-.032-.968 10.625 10.625 0 0 0-3.56-1.92l.416-1.903C20.71 5.39 20.38 5 19.94 5h-2.567a.69.69 0 0 0-.68.528l-.376 1.693c-3.412.163-6.303 1.796-6.303 5.147 0 2.9 2.392 4.144 4.917 5.004 2.393.86 3.655 1.18 3.655 2.391 0 1.243-1.262 1.976-3.123 1.976-1.697 0-3.475-.537-4.854-1.841a.713.713 0 0 0-.974-.002l-1.427 1.35a.652.652 0 0 0 .004.96c1.113 1.036 2.522 1.786 4.13 2.206l-.391 1.763c-.092.413.234.803.676.806l2.57.019a.689.689 0 0 0 .686-.53l.371-1.695c4.085-.242 6.586-2.372 6.586-5.49 0-2.868-2.492-4.08-5.516-5.068-1.728-.606-3.224-1.02-3.224-2.263 0-1.21 1.397-1.69 2.792-1.69Z" fill="#fff"></path>
+    </svg>
+    Cash App Pay
+  </div>
+
+  <!-- Crypto -->
+  <div>
+    <svg height="20" width="20" viewBox="0 0 32 32" fill="none">
+      <path fill="#D8DEE4" d="M0 0h32v32H0z"></path>
+      <path fill="#474E5A" d="M14.281 9.75a.781.781 0 0 0-.78.781v1.139a5 5 0 0 0 0 8.66v1.139a.781.781 0 0 0 1.562 0v-.558a5 5 0 0 0 1.874 0v.558a.781.781 0 0 0 1.563 0V20.33a5 5 0 0 0 1.453-1.268c.338-.436.128-1.044-.366-1.288-.495-.245-1.086-.025-1.479.363a2.999 2.999 0 0 1-4.464-.278 3.001 3.001 0 0 1 4.479-3.981c.39.39.98.614 1.476.373s.71-.847.375-1.286A5 5 0 0 0 18.5 11.67v-1.14a.781.781 0 1 0-1.563 0v.558a5 5 0 0 0-1.874 0v-.558a.781.781 0 0 0-.782-.781Z"></path>
+      <path fill="#474E5A" fill-rule="evenodd" d="M26 16c0 5.523-4.477 10-10 10S6 21.523 6 16 10.477 6 16 6s10 4.477 10 10Zm-1.875 0a8.125 8.125 0 1 1-16.25 0 8.125 8.125 0 0 1 16.25 0Z" clip-rule="evenodd"></path>
+    </svg>
+    Crypto
+  </div>
+
 </div>
 
-<!-- WHY TRY SECTION -->
-<section class="reveal">
-    <div class="row">
-        <div class="img-holder">
-            IMAGE PLACEHOLDER<br>(Add your "Main Trial" image here)
-        </div>
+    </section>
 
-        <div class="text">
-            <h2>Why Try the FluxTV Free Trial?</h2>
-            <p>Get 24 hours of full access to all channels, sports, movies, and international content.</p>
-
-            <div class="features-row">
-                <div class="feature">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3094/3094855.png">
-                    <p>18,000+ Channels</p>
-                </div>
-                <div class="feature">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3094/3094832.png">
-                    <p>Premium Sports + PPV</p>
-                </div>
-                <div class="feature">
-                    <img src="https://cdn-icons-png.flaticon.com/512/272/272534.png">
-                    <p>4K / UHD Quality</p>
-                </div>
-                <div class="feature">
-                    <img src="https://cdn-icons-png.flaticon.com/512/9131/9131525.png">
-                    <p>Movie Library</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- HOW IT WORKS SECTION -->
-<section class="reveal">
-    <div class="row">
-
-        <div class="text">
-            <h2>How the Free Trial Works</h2>
-            <ol>
-                <li>Submit the request or contact us.</li>
-                <li>Receive your login.</li>
-                <li>Install any IPTV app you prefer.</li>
-                <li>Enter your FluxTV login details.</li>
-                <li>Enjoy 24 hours of premium access.</li>
-            </ol>
-        </div>
-
-        <div class="img-holder">
-            IMAGE PLACEHOLDER<br>(Add a "Setup / Login" image here)
-        </div>
-    </div>
-</section>
-
-<!-- WHY CHOOSE SECTION -->
-<section class="reveal">
-    <div class="row">
-      
-<div class="img-holder">
-    <img src="/images/support_person.png" alt="Support Image" style="width:100%; height:100%; object-fit:cover; border-radius:14px;">
-</div>
-
-        <div class="text">
-            <h2>Why Choose FluxTV?</h2>
-            <ul>
-                <li>99.9% uptime with no buffering</li>
-                <li>Worldwide entertainment & daily updates</li>
-                <li>Anti-freeze streaming technology</li>
-                <li>Works on all devices</li>
-                <li>Real 24/7 support at www.fluxtviptv.com/support</li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-<!-- CTA ABOVE FAQ -->
-<div class="free-trial-btn">
-    <h2 style="margin-bottom:20px;">Start Your Free Trial Today</h2>
-    <p style="color:#c7d4e7; margin-bottom:30px;">Instant access • No payment • Full experience</p>
-
-    <a href="https://www.fluxtviptv.com">Get 24-Hour Free Trial</a>
-</div>
-
-<!-- FAQ SECTION -->
-<section class="reveal">
-    <h2 style="text-align:center; margin-bottom:40px;">FAQs About the FluxTV Free Trial</h2>
-
-    <div class="faq-container">
-
-        <div class="faq-item">
-            <button class="faq-question">What is an IPTV free trial?</button>
-            <div class="faq-answer">
-                <p>An IPTV free trial lets you test FluxTV for 24 hours at no cost. You can explore all channels, movies, sports, and features before subscribing.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">How do I access the FluxTV free trial?</button>
-            <div class="faq-answer">
-                <p>Just contact us on www.fluxtviptv.com/support or click the button and send us a request. We send your trial details — no payment required.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">What content is included during the trial?</button>
-            <div class="faq-answer">
-                <p>You get access to the full channel list, sports, PPV, movies, series, and all premium content — nothing is restricted.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">Are there any limitations?</button>
-            <div class="faq-answer">
-                <p>No. FluxTV gives you full access so you can experience everything exactly like a paid subscriber.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">What devices does FluxTV support?</button>
-            <div class="faq-answer">
-                <p>FluxTV works on Smart TVs, Firestick, Android phones, iOS, PC, VLC, Kodi, MAG, Enigma, Android Boxes, and more.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <button class="faq-question">Do I need a satellite or dish?</button>
-            <div class="faq-answer">
-                <p>No. FluxTV works 100% over your internet connection — no dish or satellite required.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-      <!------------>
+  <!------------>
 <!-- Footer -->
 <!------------>
 <footer class="flux-footer">
@@ -405,8 +536,10 @@
   </div>
 </footer>
 
-<script>
-      /* ---------- NAV TOGGLE ---------- */
+  <script>
+    /* ---------- NAV TOGGLE ---------- */
+    
+    
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
@@ -426,35 +559,110 @@
         setAria(false);
       }
     });
-/* ---- SCROLL ANIMATIONS ---- */
-const reveals = document.querySelectorAll('.reveal');
 
-const revealOnScroll = () => {
-  for (let i = 0; i < reveals.length; i++) {
-    const windowHeight = window.innerHeight;
-    const revealTop = reveals[i].getBoundingClientRect().top;
-    const revealPoint = 150;
 
-    if (revealTop < windowHeight - revealPoint) {
-      reveals[i].classList.add('active');
-    }
+    /* ---------- PRICING / PLANS ---------- */
+    const pricing = {
+      6:{'24hr':"Free"}
+    };
+    const popularMap = {1:'3m',2:'3m',3:'6m',4:'6m',5:'12m',6:"1d"};
+    const labels = {'24hr':'24 Hour - 1 Connection','1m':'1 Month','3m':'3 Months','6m':'6 Months','12m':'12 Months'};
+    const descText = [
+      '• +16000 Live IPTV Channels',
+      '• +40,000 VOD & TV Shows',
+      '• Antifreeze™ Technology',
+      '• 99.99% Uptime',
+      '• All Device Support',
+      '• 4K/FHD/HD/SD Quality',
+      '• Available Worldwide',
+      '• No ISP Lock',
+      '• TV Guide (EPG)'
+    ];
+
+  const urls = {
+  1: {
+    '1m': 'https://buy.stripe.com/6oU8wPg381z8d2J3MccEw01',
+    '3m': 'https://buy.stripe.com/fZu7sL6sy4Lk6El0A0cEw02',
+    '6m': 'https://buy.stripe.com/14AdR9aIO5Po1k16YocEw03',
+    '12m': 'https://buy.stripe.com/8x200jdV0b9I6EleqQcEw04'
+  },
+  2: {
+    '1m': 'https://buy.stripe.com/8x2aEX5ou1z8bYFfuUcEw05',
+    '3m': 'https://buy.stripe.com/bJecN53gmdhQfaR2I8cEw06',
+    '6m': 'https://buy.stripe.com/8x2eVdbMSb9I9Qx6YocEw07',
+    '12m': 'https://buy.stripe.com/eVq8wP5ou91AfaR82scEw08'
+  },
+  3: {
+    '1m': 'https://buy.stripe.com/aFacN5g385Po6El3MccEw09',
+    '3m': 'https://buy.stripe.com/7sY9AT6sy91A7IpciIcEw0a',
+    '6m': 'https://buy.stripe.com/4gMeVdaIO1z87IpaaAcEw0b',
+    '12m': 'https://buy.stripe.com/14A28r3gm2Dc5AhciIcEw0c'
+  },
+  4: {
+    '1m': 'https://buy.stripe.com/14AaEX3gmcdMfaRdmMcEw0d',
+    '3m': 'https://buy.stripe.com/bJe9AT18e4Lk1k14QgcEw0e',
+    '6m': 'https://buy.stripe.com/3cI14ng382Dc1k15UkcEw0f',
+    '12m': 'https://buy.stripe.com/9B600jg38elU9QxbeEcEw0g'
+  },
+  5: {
+    '1m': 'https://buy.stripe.com/dRmeVd9EKgu2bYFbeEcEw0h',
+    '3m': 'https://buy.stripe.com/eVqeVd6sya5Ee6NbeEcEw0i',
+    '6m': 'https://buy.stripe.com/14A7sL5ou5Po0fX6YocEw0j',
+    '12m': 'https://buy.stripe.com/bJe3cv6sy1z8e6N96wcEw0k'
+  },
+  6: {
+    '24hr': 'https://buy.stripe.com/3cI3cv7wC91A3s94QgcEw00'
   }
 };
 
-window.addEventListener('scroll', revealOnScroll);
-window.addEventListener('load', revealOnScroll);
+let current = 1;
 
-/* ---- FAQ Accordion ---- */
-document.addEventListener("DOMContentLoaded", function () {
-    const items = document.querySelectorAll(".faq-item");
-    items.forEach(item => {
-        const question = item.querySelector(".faq-question");
-        question.addEventListener("click", () => {
-            item.classList.toggle("active");
-        });
-    });
-});
-</script>
 
+   function renderDeviceButtons(){
+  const wrap = document.getElementById('deviceSelect');
+  wrap.innerHTML = '';
+  
+  for(let i = 1; i <= 6; i++){
+    const b = document.createElement('button');
+    b.className = 'device-btn' + (i === current ? ' active' : '');
+
+    if (i === 6) {
+      b.textContent = "Free Trial";
+    } else {
+      b.textContent = i + (i > 1 ? ' Devices' : ' Device');
+    }
+
+    b.onclick = () => { 
+      current = i; 
+      renderDeviceButtons(); 
+      renderPlans(); 
+    };
+
+    wrap.appendChild(b);
+  }
+}
+
+    function renderPlans(){
+      const area = document.getElementById('plans');
+      area.innerHTML = '';
+      const popular = popularMap[current];
+      Object.keys(pricing[current]).forEach(key=>{
+        const card = document.createElement('div'); card.className='plan';
+        if(key===popular) { card.classList.add('popular-glow'); const tag=document.createElement('div'); tag.className='popular'; tag.textContent='MOST POPULAR'; card.appendChild(tag); }
+        const h=document.createElement('h3'); h.textContent = labels[key];
+        const p=document.createElement('div'); p.className='price'; p.textContent = pricing[current][key];
+        const ul=document.createElement('ul'); ul.style.margin='0 0 12px 0'; ul.style.padding='0 0 0 18px'; ul.style.color='var(--muted)';
+        descText.forEach(line=>{ const li=document.createElement('li'); li.style.marginBottom='6px'; li.textContent=line.replace('• ',''); ul.appendChild(li); });
+        const a = document.createElement('a');
+a.href = urls[current][key];   // FIXED
+a.textContent = 'Choose Plan';
+        card.appendChild(h); card.appendChild(p); card.appendChild(ul); card.appendChild(a);
+        area.appendChild(card);
+      });
+    }
+
+    renderDeviceButtons();
+    renderPlans();
+  </script>
 </body>
 </html>
