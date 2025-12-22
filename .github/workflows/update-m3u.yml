@@ -21,7 +21,7 @@ jobs:
       - name: Download latest playlist
         run: |
           mkdir -p channels
-          curl -L "http://fluxtv.pro/UtoJEyjHGLG6Sm" -o channels/FluxTV.m3u
+          curl -L "http://fluxtv.pro/UtoJEyjHGLG6Sm/?movies=false&series=false" -o channels/FluxTV.m3u
 
       - name: Commit and push changes
         run: |
